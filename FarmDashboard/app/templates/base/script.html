@@ -1,0 +1,30 @@
+<script src="{{url_for('static', filename='js/jquery/jquery.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/bootstrap/bootstrap.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/fastclick.js')}}"></script>
+<script src="{{url_for('static', filename='js/AdminLTE/adminlte.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/AdminLTE/demo.js')}}"></script>
+<script src="{{url_for('static', filename='js/Flot/jquery.flot.js')}}"></script>
+<script src="{{url_for('static', filename='js/Flot/jquery.flot.resize.js')}}"></script>
+<script src="{{url_for('static', filename='js/Flot/jquery.flot.pie.js')}}"></script>
+<script src="{{url_for('static', filename='js/Flot/jquery.flot.categories.js')}}"></script>
+<script src="{{url_for('static', filename='js/Flot/jquery.flot.tickrotor.js')}}"></script>
+<script src="{{url_for('static', filename='js/Flot/jquery.flot.symbol.js')}}"></script>
+<script src="{{url_for('static', filename='js/vue/vue.js')}}"></script>
+<script src="{{url_for('static', filename='js/axios.min.js')}}"></script>
+
+<script>
+  var server_timezone = {% if server_timezone %}"{{server_timezone}}"{% else %}null{% endif %};
+
+  function get_time(datetime) {
+    if (!datetime) {
+      datetime = new Date();
+    } else {
+      datetime = new Date(datetime);
+    }
+    if (server_timezone) {
+      datetime = new Date(datetime.toLocaleString("en-US", {timeZone: server_timezone}));
+    }
+
+    return datetime;
+  }
+</script>

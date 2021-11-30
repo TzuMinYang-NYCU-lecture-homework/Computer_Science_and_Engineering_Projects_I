@@ -1,0 +1,16 @@
+{
+  "name": "MorSocket-Server",
+  "private": true,
+  "dependencies": {
+    "request": "",
+    "express": "4.x",
+    "node-json-db": "^0.7.3",
+    "router": "latest",
+    "shortid": "2.x",
+    "sleep": "5.x",
+    "body-parser": "",
+    "mqtt": "",
+    "semaphore": ""
+  },
+  "main": "MorSocketServer.js"
+}

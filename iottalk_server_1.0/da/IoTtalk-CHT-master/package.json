@@ -1,0 +1,33 @@
+{
+  "name": "iottalk-cht",
+  "version": "0.0.1",
+  "description": "Connect iottalk and CHT",
+  "main": "index.js",
+  "scripts": {
+    "test": "index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sunset1995/IoTtalk-CHT.git"
+  },
+  "keywords": [
+    "iottalk",
+    "cht"
+  ],
+  "author": "sunset1995",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sunset1995/IoTtalk-CHT/issues"
+  },
+  "homepage": "https://github.com/sunset1995/IoTtalk-CHT#readme",
+  "dependencies": {
+    "bufferutil": "^1.2.1",
+    "colors": "^1.1.2",
+    "express": "^4.14.0",
+    "md5": "^2.1.0",
+    "node-datetime": "^1.0.0",
+    "request": "^2.74.0",
+    "utf-8-validate": "^1.2.1",
+    "ws": "^1.1.1"
+  }
+}

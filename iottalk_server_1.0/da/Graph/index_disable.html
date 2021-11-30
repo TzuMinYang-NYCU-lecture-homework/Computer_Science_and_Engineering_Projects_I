@@ -1,0 +1,29 @@
+<html>
+<head>
+
+</head>
+<body>
+	<div id = "selectioncontainer">
+		<select id="howmany">
+			 <option value = 1>1</option>
+			 <option value = 2>2</option>
+			 <option value = 3>3</option>
+		</select>
+		<button onclick="set()">generate</button>
+	</div>
+<script>
+	function set(){
+		var v = document.getElementById("howmany").value;
+		var element = document.getElementById("selectioncontainer");
+		element.parentNode.removeChild(element);
+		for(i = 0; i < v; i++){
+			var iframe = document.createElement('iframe');
+			iframe.width="100%";
+			iframe.height="480px";
+			iframe.setAttribute("src", "graph.html");
+			document.getElementsByTagName("BODY")[0].appendChild(iframe);
+		}
+	}
+</script>
+</body>
+</html>

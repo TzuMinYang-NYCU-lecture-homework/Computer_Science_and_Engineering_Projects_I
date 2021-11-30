@@ -1,0 +1,468 @@
+# English translations for .
+# Copyright (C) 2021 ORGANIZATION
+# This file is distributed under the same license as the  project.
+# FIRST AUTHOR <ksoyam95@gmail.com>, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version:  1.0.0\n"
+"Report-Msgid-Bugs-To: ksoyam95@gmail.com\n"
+"POT-Creation-Date: 2021-10-15 14:50+0800\n"
+"PO-Revision-Date: 2021-02-03 13:34+0800\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language: th\n"
+"Language-Team: ksoy <ksoyam95@gmail.com>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Generated-By: Babel 2.9.0\n"
+
+#: app/view.py:86
+msgid "username or password is wrong."
+msgstr "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
+
+#: app/templates/compare.html:3
+msgid "Data Compare"
+msgstr "เปรียบเทียบข้อมูล"
+
+#: app/templates/compare.html:9 app/templates/compare.html:29
+#: app/templates/compare.html:83 app/templates/compare.html:84
+#: app/templates/demo_history.html:8 app/templates/history.html:8
+#: app/templates/management.html:59
+msgid "Field"
+msgstr "ฟิลด์"
+
+#: app/templates/compare.html:19 app/templates/compare.html:40
+#: app/templates/demo_history.html:15 app/templates/history.html:17
+#: app/templates/management.html:56
+msgid "Sensor"
+msgstr "เซนเซอร์"
+
+#: app/templates/compare.html:31
+msgid "None"
+msgstr "ไม่มี"
+
+#: app/templates/compare.html:50
+msgid "StartTime"
+msgstr "เวลาเริ่มต้น"
+
+#: app/templates/compare.html:61
+msgid "EndTime"
+msgstr "เวลาสิ้นสุด"
+
+#: app/templates/compare.html:72
+msgid "Interval"
+msgstr "ช่วงเวลา"
+
+#: app/templates/compare.html:74
+msgid "Second"
+msgstr "วินาที"
+
+#: app/templates/compare.html:75
+msgid "Minute"
+msgstr "นาที"
+
+#: app/templates/compare.html:76 app/templates/demo_history.html:27
+#: app/templates/history.html:29
+msgid "Hour"
+msgstr "ชั่วโมง"
+
+#: app/templates/compare.html:77
+msgid "Day"
+msgstr "วัน"
+
+#: app/templates/compare.html:82
+msgid "Query"
+msgstr "สอบถาม"
+
+#: app/templates/compare.html:83 app/templates/compare.html:84
+msgid "Download"
+msgstr "ดาวน์โหลด"
+
+#: app/templates/compare.html:93
+msgid "History Histogram"
+msgstr "ฮิสโตแกรมประวัติ"
+
+#: app/templates/dashboard.html:20 app/templates/demo.html:12
+msgid "More info"
+msgstr "ข้อมูล (เพิ่มเติม)"
+
+#: app/templates/dashboard.html:46
+msgid "Sensor Dashboard"
+msgstr "แผงควบคุมเซ็นเซอร์"
+
+#: app/templates/dashboard.html:55
+msgid "memo"
+msgstr "บันทึก"
+
+#: app/templates/demo_history.html:24 app/templates/history.html:26
+msgid "Time Slot"
+msgstr "ช่วงเวลา"
+
+#: app/templates/demo_history.html:26 app/templates/history.html:28
+msgid "Hours"
+msgstr "ชั่วโมง"
+
+#: app/templates/demo_history.html:28 app/templates/history.html:30
+msgid "Minutes"
+msgstr "นาที"
+
+#: app/templates/demo_history.html:38 app/templates/history.html:40
+msgid "Data Chart"
+msgstr "แผนภูมิข้อมูล"
+
+#: app/templates/history.html:3
+msgid "Latest 24 hours data history"
+msgstr "ประวัติข้อมูลล่าสุด 24 ชั่วโมง"
+
+#: app/templates/login.html:6
+msgid "Environment Monitor System"
+msgstr "ระบบตรวจสอบสภาพแวดล้อม"
+
+#: app/templates/login.html:9
+msgid "Sign in to start your session"
+msgstr "ลงชื่อเข้าใช้เพื่อเริ่มเซสชันของคุณ"
+
+#: app/templates/management.html:3
+msgid "System Management"
+msgstr "การจัดการ"
+
+#: app/templates/management.html:12 app/templates/management.html:209
+#: app/templates/management.html:253 app/templates/management.html:255
+#: app/templates/management.html:342 app/templates/management.html:377
+#: app/templates/management.html:379
+msgid "name"
+msgstr "ชื่อ"
+
+#: app/templates/management.html:13 app/templates/management.html:210
+#: app/templates/management.html:260 app/templates/management.html:262
+msgid "df_name"
+msgstr ""
+
+#: app/templates/management.html:14 app/templates/management.html:211
+#: app/templates/management.html:267 app/templates/management.html:269
+#: app/templates/management.html:343 app/templates/management.html:384
+#: app/templates/management.html:386
+msgid "alias"
+msgstr ""
+
+#: app/templates/management.html:15 app/templates/management.html:212
+#: app/templates/management.html:274 app/templates/management.html:276
+msgid "unit"
+msgstr "ยูนิต"
+
+#: app/templates/management.html:16 app/templates/management.html:213
+#: app/templates/management.html:281 app/templates/management.html:284
+msgid "icon"
+msgstr "ไอคอน"
+
+#: app/templates/management.html:17
+msgid "bg_color"
+msgstr "สี"
+
+#: app/templates/management.html:18
+msgid "alert_min"
+msgstr ""
+
+#: app/templates/management.html:19
+msgid "alert_max"
+msgstr ""
+
+#: app/templates/management.html:53
+msgid "User"
+msgstr "ผู้ใช้งาน"
+
+#: app/templates/management.html:73
+msgid "Users"
+msgstr "ผู้ใช้งาน"
+
+#: app/templates/management.html:75 app/templates/management.html:199
+#: app/templates/management.html:332
+msgid "add"
+msgstr "เพิ่ม"
+
+#: app/templates/management.html:86 app/templates/management.html:121
+#: app/templates/management.html:123
+msgid "username"
+msgstr "ชื่อผู้ใช้"
+
+#: app/templates/management.html:87 app/templates/management.html:138
+msgid "superuser"
+msgstr "ซูเปอร์ยูสเซอร์"
+
+#: app/templates/management.html:112
+msgid "User Management"
+msgstr "การจัดการ"
+
+#: app/templates/management.html:129 app/templates/management.html:131
+msgid "password"
+msgstr "รหัสผ่าน"
+
+#: app/templates/management.html:148
+msgid "access fields"
+msgstr "เข้าถึงฟิลด์"
+
+#: app/templates/management.html:161
+msgid "active field"
+msgstr ""
+
+#: app/templates/management.html:172 app/templates/management.html:305
+#: app/templates/management.html:420
+msgid "DELETE"
+msgstr "ลบ"
+
+#: app/templates/management.html:173 app/templates/management.html:306
+#: app/templates/management.html:421
+msgid "Update"
+msgstr "อัปเดต"
+
+#: app/templates/management.html:174 app/templates/management.html:307
+#: app/templates/management.html:422
+msgid "Create"
+msgstr "สร้าง"
+
+#: app/templates/management.html:175 app/templates/management.html:308
+#: app/templates/management.html:423
+msgid "Close"
+msgstr "ปิด"
+
+#: app/templates/management.html:195
+msgid "Sensors"
+msgstr "เซนเซอร์"
+
+#: app/templates/management.html:198
+msgid "Restart Server"
+msgstr "รีสตาร์ทเซิฟเวอร์"
+
+#: app/templates/management.html:214 app/templates/management.html:292
+#: app/templates/management.html:295
+msgid "color"
+msgstr "สี"
+
+#: app/templates/management.html:244
+msgid "Sensor Management"
+msgstr "การจัดการ"
+
+#: app/templates/management.html:269
+msgid "Ultraviolet"
+msgstr "รังสีอังตราไวโอเลต"
+
+#: app/templates/management.html:287
+msgid "You can use icon"
+msgstr "คุณสามารใช้งานไอคอน"
+
+#: app/templates/management.html:287
+msgid "here"
+msgstr "ที่นี่"
+
+#: app/templates/management.html:295
+msgid "background"
+msgstr "พื้นหลัง"
+
+#: app/templates/management.html:298
+msgid "You can use"
+msgstr "คุณสามารใช้งาน"
+
+#: app/templates/management.html:298
+msgid "bootstrap bg-color"
+msgstr ""
+
+#: app/templates/management.html:329
+msgid "Fields"
+msgstr "ฟิลด์"
+
+#: app/templates/management.html:331
+msgid "Restart DA"
+msgstr "รีสตาร์ทดีเอ"
+
+#: app/templates/management.html:368
+msgid "Field Management"
+msgstr "การจัดการ"
+
+#: app/templates/management.html:391 app/templates/management.html:393
+msgid "iframe URL"
+msgstr ""
+
+#: app/templates/management.html:398
+msgid "sensors"
+msgstr "เซนเซอร์"
+
+#: app/templates/management.html:573
+msgid "Username can not be empty"
+msgstr "ระบุชื่อผู้ใช้ (ชื่อผู้ใช้จะปล่อยว่างไม่ได้)"
+
+#: app/templates/management.html:585
+msgid "Password length must be greater than or equal to 6"
+msgstr "รหัสต้องมีความยาวอย่างน้อยหกตัว"
+
+#: app/templates/management.html:590
+msgid "Password must contain at least three of them: Uppercase letters, "
+"Lowercase letters, numbers and special symbols"
+msgstr "รหัสผ่านต้องประกอบไปด้วย ตัวอักษรใหญ่ ตัวอักษรเล็ก ตัวเลขและสัญลักษณ์"
+
+#: app/templates/management.html:603
+msgid "Please enter your username"
+msgstr "กรุณาใส่ชื่อผู้ใช้งาน"
+
+#: app/templates/management.html:607
+msgid "Please enter your new password"
+msgstr "กรุณาใส่รหัสใหม่"
+
+#: app/templates/management.html:637
+msgid "You need to 'Restart Server' to use the new sensor."
+msgstr "คุณต้องรีสตาร์ทเซิฟเวอร์เพื่อใช้งานนิวเซนเซอร์"
+
+#: app/templates/management.html:685
+msgid "Field name cannot be empty."
+msgstr "ระบุชื่อฟิลด์ (ชื่อฟิลด์จะปล่อยว่างไม่ได้)"
+
+#: app/templates/management.html:693
+msgid "You need to 'Restart DA' to activate the new field."
+msgstr "คุณต้องรีสาร์ต DA เพื่อที่จะเปิดใช้งาน new field"
+
+#: app/templates/management.html:714
+msgid "Related information in DB will also be deleted, are you sure?"
+msgstr "ข้อมูลที่เชื่อมต่อใน DB จะถูกลบไปด้วย , คุณแน่ใจ(ที่จะลบ)มั้ยM"
+
+#: app/templates/management.html:769 app/templates/management.html:778
+msgid "Restart successfully."
+msgstr "รีสตาร์ทสำเร็จ"
+
+#: app/templates/management.html:771
+msgid "The server will restart... if it doesn't recover after a few minutes, "
+"please contact the administrator"
+msgstr "ระบบกำลังจะรีสตาร์ท "
+"กรุณาติดต่อผู้ดูแลระบบหากยังไม่สามารถใช้งานได้ในอีกสักพัก"
+
+#: app/templates/profile.html:3
+msgid "Personal Profile"
+msgstr "ประวัติส่วนตัว(ผู้ใช้)"
+
+#: app/templates/profile.html:10
+msgid "Change Password"
+msgstr "เปลี่ยนรหัส"
+
+#: app/templates/profile.html:17 app/templates/profile.html:18
+msgid "Old Password"
+msgstr "รหัสเก่า"
+
+#: app/templates/profile.html:23 app/templates/profile.html:26
+msgid "New Password"
+msgstr "รหัสใหม่"
+
+#: app/templates/profile.html:23
+msgid "Must contain at least three of them: Uppercase letters,\n"
+"               Lowercase letters, numbers and special symbols"
+msgstr "(รหัสผ่าน)ต้องประกอบไปด้วย ตัวอักษรใหญ่ ตัวอักษรเล็ก ตัวเลขและสัญลักษณ์"
+
+#: app/templates/profile.html:30 app/templates/profile.html:31
+msgid "Repeat New Password"
+msgstr "ใส่รหัสผ่านใหม่อีกครั้ง"
+
+#: app/templates/profile.html:38
+msgid "Submit"
+msgstr "ส่ง"
+
+#: app/templates/profile.html:47
+msgid "Delete Account"
+msgstr "ลบบัญชีผู้ใช้"
+
+#: app/templates/profile.html:50
+msgid "Once you delete an account, there is no going back. Please be certain."
+msgstr "หากคุณลบบัญชีผู้ใช้แล้ว จะไม่สามารถยกเลิกได้  "
+
+#: app/templates/profile.html:54
+msgid "Delete"
+msgstr "ลบ"
+
+#: app/templates/profile.html:67
+msgid "Are you absolutely sure?"
+msgstr "คุณแน่ใจใช่มั้ย"
+
+#: app/templates/profile.html:70
+msgid "This action"
+msgstr ""
+
+#: app/templates/profile.html:70
+msgid "cannot"
+msgstr "ไม่สามารถ"
+
+#: app/templates/profile.html:70
+msgid "be undone. This will permanently delete the"
+msgstr "จะถูกลบอย่าถวร"
+
+#: app/templates/profile.html:70
+msgid "account and remove all related information."
+msgstr ""
+
+#: app/templates/profile.html:72
+msgid "After deleting this account, you will not be able to log in and use our "
+"services again."
+msgstr "หลังจากที่ทำการลบบัญชีนี้แล้ว "
+"คุณจะไม่สามารถเข้าใช้งานและใช้บริการของเราได้อีก"
+
+#: app/templates/profile.html:74
+msgid "If you have any questions, please contact our staff."
+msgstr "หากคุณมีคำถาม กรุณาติดต่อเจ้าหน้าที่ของเรา"
+
+#: app/templates/profile.html:76
+msgid "Please type username and password to confirm."
+msgstr "ชื่อผู้ใช้หรือรหัสผ่านไม่ถูกต้อง"
+
+#: app/templates/profile.html:81 app/templates/profile.html:82
+msgid "Username"
+msgstr "ชื่อผู้ใช้"
+
+#: app/templates/profile.html:87 app/templates/profile.html:88
+msgid "Password"
+msgstr "รหัสผ่าน"
+
+#: app/templates/profile.html:95
+msgid "I under stand the consequences, delete this account."
+msgstr "ฉันเข้าใจถึงผลที่จะตามมา, ลบบัญชีผู้ใช้"
+
+#: app/templates/base/footer.html:3
+msgid "Version"
+msgstr ""
+
+#: app/templates/base/footer.html:5
+msgid "Copyright"
+msgstr ""
+
+#: app/templates/base/footer.html:5
+msgid "All rights reserved."
+msgstr ""
+
+#: app/templates/base/head.html:4 app/templates/base/header.html:7
+msgid "IoT Environment Monitor System"
+msgstr "ระบบตรวจสอบสภาพแวดล้อม IoT"
+
+#: app/templates/base/header.html:5
+msgid "IoT"
+msgstr "IoT"
+
+#: app/templates/base/header.html:47
+msgid "Profile"
+msgstr "ข้อมูลส่วนตัว"
+
+#: app/templates/base/header.html:50
+msgid "Sign out"
+msgstr "ออกจากระบบ"
+
+#: app/templates/base/sidebar.html:9
+msgid "Dashboard"
+msgstr "แผงควบคุม"
+
+#: app/templates/base/sidebar.html:10
+msgid "History"
+msgstr "ประวัติ\"(การใช้งาน"
+
+#: app/templates/base/sidebar.html:11
+msgid "Compare"
+msgstr "\"เปรียบเทียบ"
+
+#: app/templates/base/sidebar.html:13
+msgid "Management"
+msgstr "การจัดการ"
+

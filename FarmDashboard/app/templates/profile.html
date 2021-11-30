@@ -1,0 +1,111 @@
+{% extends 'base/base.html' %} 
+
+{% block page_title %} {{ _('Personal Profile') }} {% endblock %}
+
+{% block page_content %}
+<div class="row">
+  <div class="col-sm-6 col-xs-12 col-sm-offset-3">
+    <div class="box box-primary">
+      <div class="box-header with-border">
+        <h3 class="box-title">{{ _('Change Password') }}</h3>
+      </div>
+
+      <div class="box-body">
+        <form role="form">
+          <input id="csrf-token" name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+          <div class="form-group">
+            <label for="oldpwd">{{ _('Old Password') }}</label>
+            <input type="password" class="form-control" id="oldpwd" placeholder="{{ _('Old Password') }}" required>
+            <span id="oldpwd-warning" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+            <label for="newpwd">
+              {{ _('New Password') }}({{ _('Must contain at least three of them: Uppercase letters,
+               Lowercase letters, numbers and special symbols') }})
+            </label>
+            <input type="password" class="form-control" id="newpwd" placeholder="{{ _('New Password') }}" required>
+            <span id="newpwd-warning" class="text-danger"></span>
+          </div>
+          <div class="form-group">
+            <label for="repnewpwd">{{ _('Repeat New Password') }}</label>
+            <input type="password" class="form-control" id="repnewpwd" placeholder="{{ _('Repeat New Password') }}" required>
+            <span id="repnewpwd-warning" class="text-danger"></span>
+          </div>
+        </form>
+      </div><!-- /.box-body -->
+
+      <div class="box-footer">
+        <button type="button" class="btn btn-primary" onclick="mysubmit()">{{ _('Submit') }}</button>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-3 col-xs-0"></div>
+
+  <div class="col-sm-6 col-xs-12 col-sm-offset-3">
+    <div class="box box-danger">
+      <div class="box-header with-border">
+        <h3 class="box-title">{{ _('Delete Account') }}</h3>
+      </div>
+      <div class="box-body">
+        <b>{{ _('Once you delete an account, there is no going back. Please be certain.') }}</b>
+      </div>
+
+      <div class="box-footer">
+        <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#modal-delete-account">{{ _('Delete') }}</button>
+      </div>
+    </div>
+  </div>
+  <!-- /.col -->
+
+  <!-- modal -->
+  <div class="modal fade" id="modal-delete-account">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">×</span></button>
+          <h4 class="modal-title">{{ _('Are you absolutely sure?') }}</h4>
+        </div>
+        <div class="modal-body">
+          <p>{{ _('This action') }} <b>{{ _('cannot') }}</b> {{ _('be undone. This will permanently delete the') }} <b>{{username}}</b> {{ _('account and remove all related information.') }}</p>
+
+          <p>{{ _('After deleting this account, you will not be able to log in and use our services again.') }}
+          <br>
+          {{ _('If you have any questions, please contact our staff.') }}</p>
+
+          <p>{{ _('Please type username and password to confirm.') }}</p>
+
+          <form role="form">
+            <input type="hidden" id="username" value="{{username}}"/>
+            <div class="form-group">
+              <label for="delacc">{{ _('Username') }}</label>
+              <input type="text" class="form-control" id="delacc" placeholder="{{ _('Username') }}" required>
+              <span id="delacc-warning" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+              <label for="delpwd">{{ _('Password') }}</label>
+              <input type="password" class="form-control" id="delpwd" placeholder="{{ _('Password') }}" required>
+              <span id="delpwd-warning" class="text-danger"></span>
+            </div>
+          </form>
+        </div>
+
+        <div class="modal-footer">
+          <button id="delbtn" type="button" class="btn btn-danger disabled" onclick="mydelete()">{{ _('I under stand the consequences, delete this account.') }}</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->
+</div>
+
+{% endblock %}
+
+{% block page_script %}
+<!-- Page script -->
+<script src="{{url_for('static', filename='js/password/password.js')}}"></script>
+<script src="{{url_for('static', filename='js/profile/profile.js')}}"></script>
+{% endblock %}

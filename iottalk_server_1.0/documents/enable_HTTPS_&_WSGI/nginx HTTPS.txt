@@ -1,0 +1,34 @@
+
+
+1. 安裝nginx
+   $ sudo apt-get update
+   $ sudo apt-get install nginx
+
+2. 修改內容如附檔default.conf一樣，但是讀取SSL key的那幾行先關閉
+   $ sudo vim /etc/nginx/sites-available/default
+
+3. 啟動nginx
+   $ sudo nginx -s reload
+
+4. 安裝cerbox
+   $ sudo apt-get update
+   $ sudo apt-get install software-properties-common
+   $ sudo add-apt-repository ppa:certbot/certbot
+   $ sudo apt-get update
+   $ sudo apt-get install python-certbot-nginx 
+   $ sudo certbot --nginx       #or $ sudo certbot --nginx certonly    #設定SSL手動
+   $ sudo certbot renew --dry-run
+
+   if SSL手動，修改 /etc/nginx/sites-available/default 啟動讀取SSL key的那幾行
+
+5. 重啟nginx
+   $ sudo nginx -s reload
+
+
+Apendix:
+
+更換domain name
+sudo certbot --nginx -d [新的DN]  --force-renewal
+
+PS. 若是/etc/nginx/sites-available/default 內容有任何一點錯誤，都將會導致更換dn失敗。 (例如多打or少打 })
+

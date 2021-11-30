@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+  <head>
+    <title>Map</title>
+    <script type=text/javascript src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <link href="{{ url_for('static', filename='style-admin.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='submenu.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='web_config.js') }}"></script>
+    <script src="{{ url_for('static', filename='dai-app-admin.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='map-icons.js') }}"></script> 
+    <script type=text/javascript src="{{ url_for('static', filename='jquery.datetimepicker.full.min.js') }}"></script>
+    <!-- Bootstrap -->
+    <script href="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <!-- Latest compiled and minified CSS -->
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Optional theme -->
+    <link href="{{ url_for('static', filename='bootstrap-theme.min.css') }}" rel="stylesheet">
+    <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script type=text/javascript src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <!-- substitute YOUR_API_KEY -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&language=en"></script>
+    <link href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css">
+
+    <script type=text/javascript>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+
+
+  </head>
+
+  <header>
+    <ul id="list" class="nav nav-pills">
+      <li id="app" role="presentation" class="menu-item dropdown" class="active">
+        <a id="app_btn" style="cursor:pointer;" data-target="#MainMenu" data-toggle="collapse" type="button" aria-expanded="false"><b>App</b></a>
+      </li>
+
+      <!-- Picture URL dialog box -->
+      <div class="modal fade" id="Picture" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"  aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              <label  class="col-sm-4 col-4 col-xl-4">Picture URL</label>
+              <input id="picture_URL" class="form-control" placeholder="Input picture URL">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal" id="history_check" style="font-size:18px;">Enter</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" id="history_check" style="font-size:18px;">Cancel</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colour range dialog box -->
+      <div class="modal fade" id="Color" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"  aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              <label  class="col-sm-4 col-4 col-xl-4">Min</label>
+              <input id="color_min" class="form-control">
+              <br>
+              <label  class="col-sm-4 col-4 col-xl-4">Max</label>
+              <input id="color_max" class="form-control">
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal" id="history_check" style="font-size:18px;">Enter</button>
+              <button type="button" class="btn btn-primary" data-dismiss="modal" id="history_check" style="font-size:18px;">Cancel</button>
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+    </ul>
+
+  </header>
+  <body>
+    <!-- Cyber object creation and setup form -->
+    <div id="icon_form" style="display: none;">
+      <div class="bg-primary form-inline" style="margin-top:1px ;margin-bottom: 0px" >
+
+        <div class="form-group" style="margin-bottom: 5px">
+          <div style="height:5px;"> &nbsp; </div>
+          <label  class="col-sm-2 col-2 col-xl-2">Name</label>
+          <div class="col-sm-10 col-10 col-xl-10">
+            <input id="icon_name" class="form-control">
+          </div>
+          <br>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 5px">
+          <div style="height:5px;"> &nbsp; </div>
+          <label  class="col-sm-3 col-3 col-xl-3">Location</label>
+          <div class="col-sm-9 col-9 col-xl-9">
+            <input id="icon_loc" class="form-control" style="width: 220px">
+          </div>
+          <br>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 5px">
+          <div style="height:5px;"> &nbsp; </div>
+          <label  class="col-sm-4 col-4 col-xl-4" id="desc">Description</label>
+          <div class="col-sm-8 col-8 col-xl-8">
+            <input id="icon_desc" class="form-control">
+          </div>
+        </div>
+
+        <div id="url_form" class="form-group" style="margin-bottom: 5px; display: none;">
+          <div style="height:5px;"> &nbsp; </div>
+          <label  class="col-sm-4 col-4 col-xl-4" id="url">URL</label>
+          <div class="col-sm-8 col-8 col-xl-8">
+            <input id="icon_url" class="form-control">
+          </div>
+        </div>
+
+        <button type="submit" id="icon_cancel" class="btn pull-right btn-default" style="margin: 5px">Cancel</button>
+        <button type="submit" id="icon_del" class="btn pull-right btn-default" style="margin: 5px">Delete</button>
+        <button type="submit" id="icon_save" class="btn pull-right btn-default" style="margin: 5px">Save</button>
+      </div>
+    </div>
+
+    <!-- Application creation and setup form -->
+    <div id="app_form" style="display: none;">
+      <div class="bg-primary form-inline" style="margin-top:1px ;margin-bottom: 0px" >
+          
+          <div class="form-group" style="margin-bottom: 5px">
+            <div style="height:5px;"> &nbsp; </div>
+            <label  class="col-sm-4 col-4 col-xl-4">Name</label>
+            <div class="col-sm-8 col-8 col-xl-8">
+              <input id="app_name" class="form-control" placeholder="application name">
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 5px">
+            <div style="height:5px;"> &nbsp; </div>
+            <label  class="col-sm-4 col-4 col-xl-4">Mobility</label>
+            <div class="col-sm-8 col-8 col-xl-8" style="color:#000000">
+              <select class="custom-select" id="app_mobility_select">
+                <option selected value ="Stationary" id="Stationary">Stationary</option>
+                <option value ="Movable" id="Movable">Movable</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-group" style="margin-bottom: 5px;">
+            <div style="height:5px;"> &nbsp; </div>
+            <label  class="col-sm-4 col-4 col-xl-4">Icon</label>
+            <div class="col-sm-8 col-8 col-xl-8" style="color:#000000">
+              <select class="custom-select" id="app_icon_select">
+                <option value ="Picture">Picture</option>
+                <option selected value ="NoLetter">No Letter</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="Visual" class="form-group" style="margin-bottom: 5px;display:none;">
+            <div style="height:5px;"> &nbsp; </div>
+            <label  class="col-sm-4 col-4 col-xl-4">Visual</label>
+            <div class="col-sm-8 col-8 col-xl-8" style="color:#000000">
+              <select class="custom-select" id="app_visual_select">
+                <option selected value ="Text">Text</option>
+                <option value ="Color">Color</option>
+              </select>
+            </div>
+          </div>
+
+          <div id="Quick_Access" class="form-group" style="margin-bottom: 5px;">
+            <div style="height:5px;"> &nbsp; </div>
+            <div class="form-check">
+              <input class="form-check-input" type="checkbox" value="1" id="Quick_Access_decide">
+              <label class="form-check-label" for="Quick_Access_decide">
+                Quick Access
+              </label>
+            </div>
+          </div>
+
+          <button type="submit" id="app_cancel" class="btn pull-right btn-default" style="margin: 5px">Cancel</button>
+          <button type="submit" id="app_del" class="btn pull-right btn-default" style="margin: 5px">Delete</button>
+          <button type="submit" id="app_save" class="btn pull-right btn-default" style="margin: 5px">Save</button>
+      </div>
+    </div>
+
+    <div id="Location-map">  </div>
+
+    <div id="MainMenu" class="collapse fix-content">
+      <div class="list-group panel" id="app_list">
+        <button type="button" style="cursor:default;background-color:#fff; min-width:138px; color:#555" class="list-group-item history btn btn-outline-primary" data-toggle="collapse" data-parent="#MainMenu" id="app_add">Add App</button>
+        <!-- 每個app要動態加這些(Example) -->
+          <button type="button" class="list-group-item" data-toggle="collapse" data-parent="#MainMenu" data-target="#i_list" style="display: none;">Camera  <span class="caret"></span></button>
+          <div class="collapse" id="i_list">
+            <button type="button" class="list-group-item" id="icon_num">Subitem 111111111111111111111111</button>
+            <button type="button" class="list-group-item">Subitem 2222222222222222222</button>
+            <button type="button" class="list-group-item">Subitem 3333333</button>
+          </div>
+      </div>
+    </div>     
+  </body>
+</html>

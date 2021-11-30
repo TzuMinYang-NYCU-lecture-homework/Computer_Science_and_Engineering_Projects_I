@@ -1,0 +1,78 @@
+{% macro content_box(fieldname, sensor, value='0') -%}
+  <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6">
+    <!-- small box -->
+    <div class="small-box {{sensor.bg_color}}">
+      <div class="inner">
+        <h3 id="{{fieldname}}_{{sensor.df_name}}" data-toggle="tooltip" title="">{{value}}</h3>
+        <p style="height: 2em">{{sensor.alias}} ({{sensor.unit}})</p>
+      </div>
+      <div class="icon">
+        <i class="fa {{sensor.icon}}"></i>
+      </div>
+      <a href="/demo/h/{{fieldname}}?token={{token}}#{{sensor.df_name}}" class="small-box-footer">{{ _('More info') }} <i class="fa fa-arrow-circle-right"></i></a>
+    </div>
+  </div>
+{%- endmacro %}
+
+<!DOCTYPE html>
+<html>
+  {% include 'base/head.html' %}
+
+  <body class="hold-transition login-page">
+    <div class="tab-pane active" id="{{fieldname}}" style="margin: 1em">
+      <div class="row">
+        {% for sensor in sensors %}
+          {{ content_box(fieldname, sensor)}}
+        {% endfor %}
+      </div>
+    </div>
+
+    <script src="{{url_for('static', filename='js/jquery/jquery.min.js')}}"></script>
+    <script src="{{url_for('static', filename='js/bootstrap/bootstrap.min.js')}}"></script>
+
+    <!-- Page script -->
+    <script>
+      $(() => {
+        // update monitor date
+
+        let request_url = '';
+        if ('{{field}}'=='None') request_url = '/demodatas?limit=1'; 
+        else request_url = '/demo/datas/{{field}}?limit=1&token={{token}}';
+
+        function update() {
+          if (!$('.active').length) {
+            setTimeout(update, 1000);
+            return;
+          }
+          let field = $('.active').attr('id').replace('tab_', '');
+          let ajax_obj = $.ajax({
+            url: request_url,
+            type:'GET'
+          }).done((data) => {
+            let expire_date = new Date();
+            expire_date.setHours(expire_date.getHours() - 1);
+            for(key in data) {
+              if(data[key][0]) {
+                if(new Date(data[key][0][0].replace(/-/g, '/')) < expire_date) {
+                  {% if timeout_strikethrough %}
+                    $('#' + field + '_' + key).html('<S>' + data[key][0][1] + '</S>');
+                  {% else %}
+                    $('#' + field + '_' + key).html('<Span>' + data[key][0][1] + '</Span>');
+                  {% endif %}
+
+                  $('#' + field + '_' + key).attr('data-original-title', 'The last data was taken at ' + data[key][0][0] + '.');
+                } else {
+                  $('#' + field + '_' + key).html(data[key][0][1]);
+                  $('#' + field + '_' + key).attr('data-original-title', '');
+                }
+              }
+            }
+          }).always(() => {
+            setTimeout(update, 1000);
+          });
+        }
+        update(); 
+      })
+    </script>
+  </body>
+</html>

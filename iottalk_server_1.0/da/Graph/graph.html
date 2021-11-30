@@ -1,0 +1,87 @@
+<!doctype html>
+<head>
+	<link type="text/css" rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/themes/base/jquery-ui.css">
+	<link type="text/css" rel="stylesheet" href="cssLibrary/graph.css">
+	<link type="text/css" rel="stylesheet" href="cssLibrary/detail.css">
+	<link type="text/css" rel="stylesheet" href="cssLibrary/legend.css">
+	<link type="text/css" rel="stylesheet" href="cssLibrary/extensions.css">
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.2/jquery.min.js"></script>
+	<script>
+		jQuery.noConflict();
+	</script>
+
+	<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.15/jquery-ui.min.js"></script>
+
+	<script src="jsLibrary/Rickshaw.js"></script>
+	<script src="jsLibrary/Rickshaw.Class.js"></script>
+	<script src="jsLibrary/Rickshaw.Compat.ClassList.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Renderer.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Renderer.Area.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Renderer.Line.js"></script>
+
+	<script src="jsLibrary/Rickshaw.Graph.Renderer.Bar.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Renderer.ScatterPlot.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Renderer.Stack.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.RangeSlider.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.RangeSlider.Preview.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.HoverDetail.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Annotate.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Legend.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Axis.Time.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Behavior.Series.Toggle.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Behavior.Series.Order.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Behavior.Series.Highlight.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Smoother.js"></script>
+	<script src="jsLibrary/Rickshaw.Fixtures.Time.js"></script>
+	<script src="jsLibrary/Rickshaw.Fixtures.Time.Local.js"></script>
+	<script src="jsLibrary/Rickshaw.Fixtures.Number.js"></script>
+	<script src="jsLibrary/Rickshaw.Fixtures.RandomData.js"></script>
+	<script src="jsLibrary/Rickshaw.Fixtures.Color.js"></script>
+	<script src="jsLibrary/Rickshaw.Color.Palette.js"></script>
+	<script src="jsLibrary/Rickshaw.Graph.Axis.Y.js"></script>
+
+	<script src="jsLibrary/extensions.js"></script>
+
+	<script src="js/csmapi.js"></script>
+	<script src="js/dan.js"></script>
+	<script src="js/dai.js"></script>
+	<script src="js/dai-app.js"></script>
+
+</head>
+<body>
+
+<div id="content">
+
+</div>
+
+<script>
+function changeLimit(){
+	var val = parseInt(document.getElementById("inputnumber").value);
+	if(val != showamount && val > 0) {
+		showamount = val;
+		while(seriesData[0].length > 0) {
+			seriesData[0].pop();
+			if(cmdparam[1] == '1') seriesData[1].pop();
+			if(cmdparam[2] == '1') seriesData[2].pop();
+			if(cmdparam[3] == '1') seriesData[3].pop();
+			if(cmdparam[4] == '1') seriesData[4].pop();
+		}
+		var datatoShow = Math.min(allData[0].length, showamount);		
+		for(i = allData[0].length - datatoShow; i < allData[0].length; i++){
+			seriesData[0].push(allData[0][i]);
+			if(cmdparam[1] == '1') seriesData[1].push(allData[1][i]);
+			if(cmdparam[2] == '1') seriesData[2].push(allData[2][i]);
+			if(cmdparam[3] == '1') seriesData[3].push(allData[3][i]);
+			if(cmdparam[4] == '1') seriesData[4].push(allData[4][i]);
+		}
+		graph.update();
+	}
+}
+
+</script>
+
+</body>

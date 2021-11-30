@@ -1,0 +1,25 @@
+#--allow-unverified mysql-connector-python
+#mysql-connector-python
+
+# Web Application Framework
+# https://flask.palletsprojects.com/en/1.1.x/
+flask~=1.1.4
+# Flask HTTP authentication extension
+# https://flask-httpauth.readthedocs.io/en/latest/
+flask_httpauth~=4.4.0
+
+# SQL ORM tool kit
+# https://docs.sqlalchemy.org/en/12/
+sqlalchemy~=1.2.14
+
+# IBM Cloudant DB (CouchDB) library, for DF upload usage
+# https://python-cloudant.readthedocs.io/en/stable/
+cloudant~=2.15.0
+
+# simple HTTP library
+# https://docs.python-requests.org/en/latest/
+requests~=2.26.0
+
+# Math library, for some join function usage
+# https://numpy.org/doc/1.19/reference/index.html
+numpy~=1.19.5

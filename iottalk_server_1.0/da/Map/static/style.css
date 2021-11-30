@@ -1,0 +1,188 @@
+html,body{
+    height: 100%;
+    width: 100%;
+    position: fixed;
+}
+
+.fix-content{
+  width: -moz-fit-content;
+  width: -webkit-fit-content;
+  width: fit-content;
+}
+
+#app_list{
+  position:absolute;
+  top: 41px;
+  z-index: 1000;
+  overflow-y: scroll;
+  max-height: 94%;
+}
+
+#dog-list{
+  min-width: 120px;
+}
+
+#autocomplete2{
+  min-width: 260px;
+}
+
+#autocomplete{
+  min-width: 260px;
+}
+
+#Video-Display{
+    position:absolute;
+    left:0%;
+    z-index: 10;
+    top: 41px;
+    height: 315px;
+    width: 560px;
+    margin: 0;
+    padding: 0;
+}
+
+#flot-placeholder{
+    position:absolute;
+    left:0%;
+    z-index: 10;
+    top: 41px;
+    height: 315px;
+    width: 560px;
+    margin: 0;
+    padding: 0;
+}
+
+#highchart{
+    position:absolute;
+    left:0%;
+    z-index: 10;
+    top: 41px;
+    height: 315px;
+    width: 560px;
+    margin: 0;
+    padding: 0;
+}
+
+#Location-map
+{
+    position: absolute;
+    left: 0%;
+    top: 41px;
+    height: 95%;
+    width: 100%;
+    z-index: -50;
+    margin: 0;
+    
+}
+
+#color_scale{
+  position: absolute;
+  z-index: 20;
+  right:3%;
+  bottom:2%;
+}
+
+#my_location{
+  position: absolute;
+  z-index: 20;
+  right:8px;
+  bottom:120px;
+}
+
+#fuck_off{
+  position: absolute;
+  z-index: 20;
+  left:530px;
+  top:40px;
+}
+@media (max-width: 560px) {
+
+    #Video-Display{
+        width:100%;
+        height: 40%;
+        /*overflow-y: visible; */
+        
+    }
+    #fuck_off{
+      /*margin-left: 5px;*/
+      left:91%;  
+    }
+    #color_scale{
+      right: 10%;
+    }
+}
+
+/* The snackbar - position it at the bottom and in the middle of the screen */
+#snackbar {
+    visibility: hidden; /* Hidden by default. Visible on click */
+    min-width: 250px; /* Set a default minimum width */
+    margin-left: -125px; /* Divide value of min-width by 2 */
+    background-color: #333; /* Black background color */
+    color: #fff; /* White text color */
+    text-align: center; /* Centered text */
+    border-radius: 2px; /* Rounded borders */
+    padding: 16px; /* Padding */
+    position: fixed; /* Sit on top of the screen */
+    z-index: 20; /* Add a z-index if needed */
+    left: 45%; /* Center the snackbar */
+    bottom: 30px; /* 30px from the bottom */
+}
+
+/* Show the snackbar when clicking on a button (class added with JavaScript) */
+#snackbar.show {
+    visibility: visible; /* Show the snackbar */
+
+/* Add animation: Take 0.5 seconds to fade in and out the snackbar. 
+However, delay the fade out process for 2.5 seconds */
+    -webkit-animation: fadein 0.5s, fadeout 0.5s 2.5s;
+    animation: fadein 0.5s, fadeout 0.5s 2.5s;
+}
+
+/* Animations to fade the snackbar in and out */
+@-webkit-keyframes fadein {
+    from {bottom: 0; opacity: 0;} 
+    to {bottom: 30px; opacity: 1;}
+}
+
+@keyframes fadein {
+    from {bottom: 0; opacity: 0;}
+    to {bottom: 30px; opacity: 1;}
+
+}
+@media (max-width: 480px) {
+
+
+@-webkit-keyframes fadeout {
+    from {bottom: 30px; opacity: 1;} 
+    to {bottom: 0; opacity: 0;}
+}
+
+@keyframes fadeout {
+    from {bottom: 30px; opacity: 1;}
+    to {bottom: 0; opacity: 0;}
+}
+
+/*@media (max-width: 559px) {
+  .video-container {
+    position: relative;
+    padding-bottom: 56.25%;
+    padding-top: 30px;
+    height: 0;
+    overflow: hidden;
+  }
+  .video-container iframe,
+  .video-container object,
+  .video-container embed {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+  }
+}*/
+
+
+.list-group.panel > .list-group-item {
+  border-bottom-right-radius: 4px;
+  border-bottom-left-radius: 4px
+}

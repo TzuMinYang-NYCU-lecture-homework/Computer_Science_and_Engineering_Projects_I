@@ -1,0 +1,17 @@
+*~
+*.tmp
+*.swp
+*.pyc
+.DS_Store
+log/
+lib/esm/df_func/f*.py
+sqlite/ec_db.db
+node_modules
+.idea
+MDB_ID
+da/panel/index.html
+da/Riddle/pating
+da/Riddle/server/upload_cache
+da/Remote_control/index.html
+da/MusicBox/package-lock.json
+da/Map/static/passwd_tracking

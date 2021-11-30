@@ -1,0 +1,74 @@
+Ubuntu安裝uwsgi
+
+sudo -H apt install libpcre3 libpcre3-dev      (CentOS要改用pcre pcre-devel pcre-static)
+sudo -H pip3 install uwsgi
+
+
+若安裝uwsgi遭遇下方錯誤，需改採用舊版的gcc編譯
+final link failed: Nonrepresentable section on output
+collect2: error: ld returned 1 exit status
+*** error linking uWSGI ***
+
+1.先安裝舊版gcc
+    sudo apt install gcc-4.8
+
+2.先記好原本系統中gcc的link內容
+    ls -l /usr/bin/gcc
+    lrwxrwxrwx 1 root root 14 Sep 13 17:47 /usr/bin/gcc -> /usr/bin/gcc-7 <---看清楚並記住，復原用
+
+3.開始修改gcc link對象
+    sudo rm /usr/bin/gcc
+    sudo ln -s /usr/bin/gcc-4.8 /usr/bin/gcc
+
+4.就可以開始再次嘗試安裝uwsgi了。安裝成功後記得把gcc link復原
+    sudo rm /usr/bin/gcc
+    sudo ln -s /usr/bin/gcc-7 /usr/bin/gcc   <---根據上面之前的樣子復原
+
+
+PS1.看到警告訊息 !!! no internal routing support, rebuild with pcre support !!!
+    libpcre3 libpcre3-dev  <--- 裝失敗了，根據OS要裝對應的
+PS2.看到警告訊息*** WARNING: you are running uWSGI without its master process manager ***
+    啟動時要加上--master參數(如下方例子所示)
+
+
+
+啟動uwsgi
+
+uwsgi --master config.ini
+
+config.ini的內容 "舉例"
+[uwsgi]
+socket = 127.0.0.1:8001
+wsgi-file = /home/iottalk/iottalk_server_1.0/lib/csm.py
+callable = app
+processes = 1
+threads = 3
+buffer-size=32768
+
+
+另外要搭配nginx，其設定檔舉例
+server {
+        listen 9999;
+
+        location / {
+                include      uwsgi_params;
+                uwsgi_pass   127.0.0.1:8001;
+                uwsgi_param UWSGI_PYHOME /home/iottalk/iottalk_server_1.0/lib;
+                uwsgi_param UWSGI_SCRIPT csm:app;
+        }
+}
+
+server {
+        listen 7788;
+
+        location / {
+                include      uwsgi_params;
+                uwsgi_pass   127.0.0.1:8002;
+                uwsgi_param UWSGI_PYHOME /home/iottalk/iottalk_server_1.0/lib/ccm;
+                uwsgi_param UWSGI_SCRIPT ccm:app;
+        }
+}
+
+
+
+

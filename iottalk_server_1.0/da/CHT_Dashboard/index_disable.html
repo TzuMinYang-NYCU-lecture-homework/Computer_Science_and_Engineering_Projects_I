@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard | CHT</title>
+    <link rel="stylesheet" type="text/css" href="cht-dashboard.css">
+</head>
+<body>
+
+    <h1>CHT Dashboard</h1>
+
+    <div id="app">
+        <section>
+            <div><strong>Status</strong></div>
+            <div><strong>Slave ID</strong></div>
+            <div class="content">
+                <section>
+                    <div><strong>Device Name</strong></div>
+                    <div><strong>Sensor Name</strong></div>
+                    <div><strong>Value</strong></div>
+                </section>
+            </div>
+        </section>
+        <section v-for="(slaveID, slave) in slaves"
+                    v-bind:class="{'offline': !online[slaveID]}">
+            <div>{{ online[slaveID] ? 'online' : 'offline' }}</div>
+            <div>{{ slaveID }}</div>
+            <div class="content">
+                <template v-for="(deviceName, device) in slave">
+                    <section>
+                        <div>{{ deviceName }}</div>
+                        <div>
+                            <template v-for="(sensorName, value) in device">
+                                <div>{{ sensorName }}</div>
+                            </template>
+                        </div>
+                        <div>
+                            <template v-for="(sensorName, value) in device">
+                                <div class="value">{{ value }}</div>
+                            </template>   
+                        </div>
+                    </section>
+                </template>
+            </div>
+        </section>
+    </div>
+
+    <script type="text/javascript" src="request.min.js"></script>
+    <script type="text/javascript" src="vue.js"></script>
+    <script type="text/javascript">
+        var vm = new Vue({
+            el: '#app',
+            data: {
+                source: {},
+            },
+            computed: {
+                online: function() {
+                    var ret = {};
+                    Object.keys(this.source).forEach(function(key) {
+                        ret[key] = this.source[key].online;
+                    }.bind(this));
+                    return ret;
+                },
+                slaves: function() {
+                    var ret = JSON.parse(JSON.stringify(this.source));
+                    Object.keys(ret).forEach(function(key) {
+                        delete ret[key].online;
+                    });
+                    return ret;
+                },
+            }
+        });
+
+        setInterval(function puller() {
+            request('GET', '/CHT_Dashboard/Json').done(function(ret) {
+                ret = JSON.parse(ret.getBody());
+                vm.source = ret.samples[0][1][0] || {};
+            });
+        }, 1000);
+    </script>
+
+</body>
+</html>

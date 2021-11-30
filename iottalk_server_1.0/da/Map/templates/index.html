@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="zh-tw" lang="zh-tw">
+<meta name="viewport" content="width=device-width initial-scale=0.9 maximum-scale=1.0 user-scalable=yes" charset="utf-8"/>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<html>
+  <head>
+    <title>Map</title>        
+    <script type=text/javascript src="{{ url_for('static', filename='jquery.js') }}"></script>
+    <script type=text/javascript src="{{ url_for('static', filename='highchart/highcharts.js') }}"></script>
+    <script type=text/javascript src="{{ url_for('static', filename='highchart/exporting.js') }}"></script>
+    <script type=text/javascript src="{{ url_for('static', filename='socket.io.min.js') }}"></script>
+    <script type=text/javascript src="{{ url_for('static', filename='d3.v5.min.js') }}"></script>
+    <link href="{{ url_for('static', filename='style.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='submenu.css') }}" rel="stylesheet">
+    <script src="{{ url_for('static', filename='csmapi.js') }}"></script>
+    <script src="{{ url_for('static', filename='dan.js') }}"></script>
+    <script src="{{ url_for('static', filename='dai.js') }}"></script>
+    <script src="{{ url_for('static', filename='web_config.js') }}"></script>
+    <script src="{{ url_for('static', filename='dai-app.js') }}"></script>
+    <script src="{{ url_for('static', filename='tracking/tracking.js') }}"></script>
+    <script src="{{ url_for('static', filename='tracking/iottalk-api.js') }}"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="{{ url_for('static', filename='bootstrap.min.css') }}" rel="stylesheet">
+    <!-- Optional theme -->
+    <link href="{{ url_for('static', filename='bootstrap-theme.min.css') }}" rel="stylesheet">
+    <!-- Latest compiled and minified JavaScript -->
+    <script type=text/javascript src="{{ url_for('static', filename='bootstrap.min.js') }}"></script>
+    <!-- substitute YOUR_API_KEY -->
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&language=en"></script>
+    <script type="text/javascript" src="{{ url_for('static', filename='map-icons.js') }}"></script>
+
+    <script type=text/javascript>
+      $SCRIPT_ROOT = {{ request.script_root|tojson|safe }};
+    </script>
+
+    <script>
+      function resizeIframe(time, obj) {
+        var oldIframeHeight = $('#Video-Display')[0].contentWindow.document.body.childNodes[1].childNodes[1].scrollHeight;
+        setTimeout(function(){
+          var iframeHeight = $('#Video-Display')[0].contentWindow.document.body.childNodes[1].childNodes[1].scrollHeight;
+          if(iframeHeight < oldIframeHeight && iframeHeight > 0)
+          {
+            obj.style.height = iframeHeight + 'px';
+            console.log("iframeHeight",iframeHeight);
+            console.log("obj.style.height", obj.style.height);
+          }
+          else if(iframeHeight == 0)
+          {
+            return;
+          }
+          else
+          {
+            resizeIframe(time, obj);
+            console.log("resizeIframe");
+          }
+        }, time);
+      }
+    </script>
+  </head>
+
+  <body>
+    <!-- nav bar -->
+    <ul id="list" class="nav nav-pills">
+      <li role="presentation" class="dropdown" class="active">
+      <li id="app" role="presentation" class="menu-item dropdown" class="active">
+        <a id="app" style="min-width:68px;text-align:center;cursor:pointer;" data-target="#MainMenu" data-toggle="collapse" type="button" aria-expanded="false"><b>App</b></a>
+      </li>
+
+      <li role="presentation" id="button_route" style="cursor:pointer;"><a id="text">Routing</a></li>
+      
+      <!-- modal form -->
+      <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel"  aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">×</span></button>
+              <form method="post" id="history_trace" style="font-size:18px;">
+              <label class="radio-inline" >
+                <input type="radio" name="optradio" id="inlineRadio1" value="0" style="height: 18px; width: 18px;" checked > &nbsp;Current
+              </label><br>
+              <label class="radio-inline">
+                <input type="radio" name="optradio" id="inlineRadio2" value="1" style="height: 18px; width: 18px;"> &nbsp;Last Minute
+              </label><br>
+              <label class="radio-inline">
+                <input type="radio" name="optradio" id="inlineRadio3" value="2" style="height: 18px; width: 18px;"> &nbsp;Last Hour
+              </label>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" data-dismiss="modal" id="loc_history" style="font-size:18px;">Enter</button><!-- Location Change -->
+              <!-- <button type="button" class="btn btn-primary" data-dismiss="modal" id="val_history" style="font-size:18px;">Value Change</button> -->
+            </div>
+          </form>
+          </div>
+        </div>
+      </div>
+      </li>
+    </ul>
+
+    <!-- Path routing setting form -->
+    <div id="input_destination" style="display:none">
+      <div class="bg-primary form-inline" style="margin-top:1px ;margin-bottom: 0px" >
+        <div class="form-group" style="margin-bottom: 0px">
+          <div style="height:5px;"> &nbsp; </div>
+          <label  class="col-sm-3 col-3 col-xl-3">Starting Point</label>
+          <div class="col-sm-9 col-9 col-xl-9">
+            <input id="autocomplete_start" type="text" class="form-control controls"  placeholder="Current Location">
+          </div>
+          <div style="height:5px;"> &nbsp; </div>
+        </div>
+      </div>
+
+      <div class="bg-primary form-inline" style="margin-bottom: 0px">
+        <div class="form-group" style="margin-bottom: 0px">
+          <label  class="col-sm-3 col-3 col-xl-3">Destination</label>
+          <div class="col-sm-9 col-9 col-xl-9">
+            <input  id="autocomplete_end" type="text" class="form-control controls"  placeholder="Choose Destination">
+          </div>
+        </div>
+        <br>
+        <button type="submit" id="button_start_routing" class="btn pull-right btn-primary" style="margin: 15px">Start Routing</button>
+      </div>
+    </div>
+    <!-- toast bar -->
+    <div id="snackbar"></div>
+    <!-- Map -->
+    <div id="Location-map"></div>
+    <!-- chart -->
+    <div id="highchart" style="display: none"></div>
+    <!-- camera close button -->
+    <button style="display: none;" id="fuck_off" class="btn btn-default">X</button>
+    <!-- colour spectrum  -->
+    <div id="color_scale"></div>
+    <!-- showing my location button in the lower right corner -->
+    <div id="my_location" style="display: none">
+      <button id="get_current_location_btn" class="btn btn-default">
+        <i class="material-icons" style="font-size:24px">my_location</i>
+      </button>
+    </div>
+    <!-- showing camera  -->
+    <div class="container" id="wrapper" overflow="hidden">
+        <iframe src="{{ url_for('static', filename='map-cam/index-col-sm.html') }}" id = "Video-Display" frameborder="0" scrolling="no" allowfullscreen="true" style="display: none;" marginheight="0" marginwidth="0" align="center" onload="resizeIframe(1000, this)">
+        </iframe>
+    </div> 
+    <!-- App dropdown collapse -->
+    <div id="MainMenu" class="collapse fix-content">
+      <div class="list-group panel" id="app_list">
+        <!-- 每個app要動態加這些 -->
+        <button type="button" class="list-group-item" data-toggle="collapse" data-parent="#MainMenu" data-target="#i_list" style="display: none;">Camera<span class="caret"></span>
+        </button>
+        <div class="collapse" id="i_list">
+          <button type="button" class="list-group-item" id="icon_num">Subitem 111111111111111111111111</button>
+          <button type="button" class="list-group-item">Subitem 2222222222222222222</button>
+          <button type="button" class="list-group-item">Subitem 3333333</button>
+        </div>
+      </div>
+    </div>
+
+  </body>
+</html>

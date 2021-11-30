@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+{% include 'base/head.html' %}
+<body class="hold-transition login-page">
+<div class="login-box">
+  <div class="login-logo"><b>IoT</b> {{ _('Environment Monitor System') }}</div>
+
+  <div class="login-box-body" style="border-radius: 20px;">
+    <p class="login-box-msg">{{ _('Sign in to start your session') }}</p>
+
+    <form method="post">
+      <input name="csrf_token" type="hidden" value="{{ csrf_token() }}"/>
+      <div class="form-group has-feedback">
+        <input name="username" type="username" class="form-control" placeholder="Username" style="border-radius: 17px;">
+        <span class="glyphicon glyphicon-user form-control-feedback"></span>
+      </div>
+      <div class="form-group has-feedback">
+        <input name="password" type="password" class="form-control" placeholder="Password" autocomplete="off" style="border-radius: 17px;">
+        <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+      </div>
+      <div class="row">
+        {% if msg %}
+        <div class="col-xs-12"><span style="color:red">{{msg}}</span></div>
+        {% endif %}
+        <div class="col-xs-8"></div>
+        <div class="col-xs-4">
+          <button type="submit" class="btn btn-primary btn-block btn-flat" style="border-radius: 17px;">Sign In</button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+  <!-- /.login-box-body -->
+</div>
+<!-- /.login-box -->
+
+<script src="{{url_for('static', filename='js/jquery/jquery.min.js')}}"></script>
+<script src="{{url_for('static', filename='js/bootstrap/bootstrap.min.js')}}"></script>
+
+</body>
+</html>

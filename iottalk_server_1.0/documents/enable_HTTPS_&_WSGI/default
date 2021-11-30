@@ -1,0 +1,69 @@
+server {
+        listen 9999;
+        allow 127.0.0.1 ;
+        deny all;
+        location / {
+                include      uwsgi_params;
+                uwsgi_pass   127.0.0.1:8001;
+                uwsgi_param UWSGI_PYHOME /home/iottalk/iottalk_server_1.0/lib;
+                uwsgi_param UWSGI_SCRIPT csm:app;
+        }
+}
+
+server {
+        listen 7788;
+
+        location / {
+                include      uwsgi_params;
+                uwsgi_pass   127.0.0.1:8002;
+                uwsgi_param UWSGI_PYHOME /home/iottalk/iottalk_server_1.0/lib/ccm;
+                uwsgi_param UWSGI_SCRIPT ccm:app;
+        }
+}
+
+server {
+        listen 80 default_server;
+        listen [::]:80 default_server;
+        listen 443 ssl; 
+        
+	server_name auth.iottalk.tw;   
+
+        location / {
+		proxy_pass		http://localhost:9999;
+		proxy_set_header	Host $host;
+        } 
+
+        location /static/ {
+                proxy_pass              http://localhost:9999/static/;
+                proxy_set_header        Host $host;
+        }
+
+        location /map/ {
+                proxy_pass              http://localhost:8866/;
+                proxy_set_header        Host $host;
+        }
+
+#        location /static/ {
+#                proxy_pass              http://localhost:8866/static/;
+#                proxy_set_header        Host $host;
+#        }
+
+        location /secure/ {
+                proxy_pass              http://localhost:8866/secure/;
+                proxy_set_header        Host $host;
+        }
+
+        location /socket.io/ {
+                proxy_pass              http://localhost:8866/socket.io/;
+                proxy_set_header        Host $host;
+        }      
+
+        ssl_certificate /etc/letsencrypt/live/auth.iottalk.tw/fullchain.pem; # managed by Certbot
+        ssl_certificate_key /etc/letsencrypt/live/auth.iottalk.tw/privkey.pem; # managed by Certbot
+        include /etc/letsencrypt/options-ssl-nginx.conf; # managed by Certbot
+        ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem; # managed by Certbot
+
+        if ($scheme != "https") {
+            return 301 https://$host$request_uri;
+        } # managed by Certbot
+}

@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>NCTU IoTtalk Remote Controller with Live View!</title>
+
+    <meta name="description" content="Source code generated using layoutit.com">
+    <meta name="author" content="LayoutIt!">
+
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/style.css" rel="stylesheet">
+	
+	<link rel="shortcut icon" href="./favicon.ico" type="image/x-icon">
+	<link rel="icon" href="./favicon.ico" type="image/x-icon">
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/scripts.js"></script>	
+  </head>
+  <body onload="flogin();" style="background-color: #e9e9e9;">
+    <div class="container-fluid">
+	<div class="row">
+		<div class="col-sm-7">
+			<div class="row">
+			<div class="col-sm-12">
+			<a href="#" id="pop">
+			<picture>
+				<source srcset="http://140.113.169.231/video3.mjpg"	media="(max-width:640px)">
+				<img src="http://140.113.169.231/video.mjpg" alt="IoTtalk Live View" id="imageresource" class="img-rounded" onerror="reloadImage(this)" onclick="openNav();flogin();"/>
+			</picture>
+			</a>
+			<h3 class="text-center text-info">
+				
+			</h3>
+			<form id="login" target="retframe" method="post" action="http://140.113.169.231">
+				<input type="hidden" name="username" value="login" />
+				<input type="hidden" name="password" value="pass" />
+            </form>
+			</div>
+			</div>
+			<div class="row">
+						<div class="col-sm-12">							 
+
+							<form id="fSelectPreset" target="retframe" accept-charset="UTF-8" method="get" action="http://140.113.169.231/cgi-bin/viewer/recall.cgi" onload="fGetPresetOptions();">
+								<div class="form-group">								  
+								  <select class="form-control" id="sel-preset" onchange="fSelectPreset();">
+									<option value="-1">-- Select The Preset Location --</option><option value="0">CHT_Fan</option><option value="1">LED大燈</option><option value="2">CHIMEI_Fan</option><option value="3">Curtain1</option><option value="4">Curtain2</option><option value="5">Curtain3</option><option value="6">Curtain</option><option value="7">大門</option><option value="8">Skeleton</option><option value="9">空氣清淨機</option><option value="10">日光燈</option><option value="11">投射燈</option><option value="12">間接照明</option><option value="13">窗戶</option><option value="14">Knob</option><option value="15">Cells</option><option value="16">Christmas_Tree</option>
+								  </select>
+								</div>
+								<!-- <input name="recall" type="hidden" value="CHT_Fan"> -->
+							</form>
+
+							<!--
+							<div class="btn-group">
+								 
+								<button class="btn btn-default">
+									Action
+								</button> 
+								<button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
+									<span class="caret"></span>
+								</button>
+								<ul class="dropdown-menu">
+									<li>
+										<a href="#">Action</a>
+									</li>
+									<li class="disabled">
+										<a href="#">Another action</a>
+									</li>
+									<li class="divider">
+									</li>
+									<li>
+										<a href="#">Something else here</a>
+									</li>
+								</ul>
+							</div>
+							-->
+
+						</div>			
+			</div>
+			<div class="row">
+						<!-- 3 columns for buttons
+						<div class="col-sm-4">							 
+							<input type="button" class="btn btn-block btn-success btn-lg btn-ptz" ontouchstart="CamControl('zoom', 'tele')" ontouchend="CamControl('zoom', 'stop')" onmousedown="CamControl('zoom', 'tele')" onmouseup="CamControl('zoom', 'stop')" style="background-image:url('./pic/zoom-in.png');">
+							<input type="button" class="btn btn-block btn-warning btn-lg btn-ptz" ontouchstart="CamControl('move', 'left')" ontouchend="CamControl('move', 'stop')" onmousedown="CamControl('move', 'left')" onmouseup="CamControl('move', 'stop')" style="background-image:url('./pic/arrow-left.png');">
+						</div>
+						<div class="col-sm-4">							 
+							<input type="button" class="btn btn-block btn-primary btn-lg btn-ptz" ontouchstart="CamControl('move', 'up')" ontouchend="CamControl('move', 'stop')" onmousedown="CamControl('move', 'up')" onmouseup="CamControl('move', 'stop')" style="background-image:url('./pic/arrow-up.png');">
+							<input type="button" class="btn btn-block btn-primary btn-lg btn-ptz" ontouchstart="CamControl('move', 'down')" ontouchend="CamControl('move', 'stop')" onmousedown="CamControl('move', 'down')" onmouseup="CamControl('move', 'stop')" style="background-image:url('./pic/arrow-down.png');">
+						</div>
+						<div class="col-sm-4">							 
+							<input type="button" class="btn btn-block btn-success btn-lg btn-ptz" ontouchstart="CamControl('zoom', 'wide')" ontouchend="CamControl('zoom', 'stop')" onmousedown="CamControl('zoom', 'wide')" onmouseup="CamControl('zoom', 'stop')" style="background-image:url('./pic/zoom-out.png');">
+							<input type="button" class="btn btn-block btn-warning btn-lg btn-ptz" ontouchstart="CamControl('move', 'right')" ontouchend="CamControl('move', 'stop')" onmousedown="CamControl('move', 'right')" onmouseup="CamControl('move', 'stop')" style="background-image:url('./pic/arrow-right.png');">
+						</div>
+						-->
+						<div class="col-xs-2">
+							<input type="button" class="btn btn-block btn-success btn-sm btn-ptz" onclick="CamControl('zoom', 'tele')" style="background-image:url('./pic/zoom-in.png');">
+						</div>
+						<div class="col-xs-2">
+							<input type="button" class="btn btn-block btn-success btn-sm btn-ptz" onclick="CamControl('zoom', 'wide')" style="background-image:url('./pic/zoom-out.png');">
+						</div>
+						<div class="col-xs-2">
+							<input type="button" class="btn btn-block btn-primary btn-sm btn-ptz" onclick="CamControl('move', 'up')" style="background-image:url('./pic/arrow-up.png');">
+						</div>
+						<div class="col-xs-2">
+							<input type="button" class="btn btn-block btn-primary btn-sm btn-ptz" onclick="CamControl('move', 'down')" style="background-image:url('./pic/arrow-down.png');">
+						</div>
+						<div class="col-xs-2">
+							<input type="button" class="btn btn-block btn-warning btn-sm btn-ptz" onclick="CamControl('move', 'left')" style="background-image:url('./pic/arrow-left.png');">
+						</div>
+						<div class="col-xs-2">
+							<input type="button" class="btn btn-block btn-warning btn-sm btn-ptz" onclick="CamControl('move', 'right')" style="background-image:url('./pic/arrow-right.png');">
+						</div>
+			</div>
+		</div>
+		<div class="row">
+		<div class="col-sm-5">
+			<h3 class="text-center text-info">
+			</h3>						
+				<iframe src="http://140.113.199.246:9999/da/Remote_control" style="height:100%; width:100%;" frameborder="0"></iframe>
+		</div>
+		</div>
+	</div>
+	    <iframe id="retframe" name="retframe" frameborder="0" style="display:none;"></iframe>
+
+	<!-- Creates the Full screen Overlay Navigation -->
+	<div id="myNav" class="overlay">
+	  <!-- <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a> -->
+	  <div class="overlay-content">
+			<picture>
+				<source srcset="http://140.113.169.231/video3.mjpg"	media="(max-width:640px)">
+				<img src="http://140.113.169.231/video.mjpg" alt="IoTtalk Live View" id="imageresource" class="img-rounded" onerror="reloadImage(this)" onclick="closeNav(); flogin();"/>
+			</picture>
+	  </div>
+	</div>
+    </div>
+
+
+  </body>
+</html>

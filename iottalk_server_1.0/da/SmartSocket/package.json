@@ -1,0 +1,13 @@
+{
+  "name": "SmartSwitch",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "4.x",
+    "ejs" : "1.x",
+    "shortid": "2.x",
+    "sleep" : "5.x",
+    "repeat": "0.x"
+  },
+  "main": "DAI.js"
+}
