@@ -18,6 +18,73 @@ from da.DAN import DAN
 log = logging.getLogger("\033[1;33m[API]: \033[0m")
 api = Blueprint('API', __name__)
 
+### add by myself
+@api.route('/push_history', methods=['GET'])
+@utils.required_login
+def api_push_history():
+    '''
+    :args f: field, like `flower`, `orange`, etc
+    :args st: start_time, any time format
+    :args et: end_time, any time format
+    :args i: interval, only allow `second`, `minute`, `hour`, `day`, default `hour`
+    :args l: limit, query limit, default config.QUERY_LIMIT
+
+    example:
+        http://your.domain/api/push_history?f=flower&st=2018-06-26&et=2018-06-27&i=second
+    '''
+    stime = datetime.now()
+
+    field1 = request.args.get('f')
+    start_time = request.args.get('st')
+    end_time = request.args.get('et')
+    interval = request.args.get('i', 'hour')
+    limit = int(request.args.get('l')) if request.args.get('l') else None
+
+    
+    if not field1 or not start_time or not end_time:
+        abort(404)
+
+    start = parser.parse(start_time).strftime('%Y-%m-%d %H:%M:%S')
+    end = parser.parse(end_time).strftime('%Y-%m-%d %H:%M:%S')
+
+    result = {field1: {}}
+
+    ### add by myself
+    # push request data to history-I
+    from config import CSM_HOST as host
+
+    for field in (g.session.query(db.models.field).all()):
+        if field.name != field1 :
+            continue
+
+        profile = {'d_name': field.name + '_DataServer',
+                    'dm_name': 'DataServer',
+                    'df_list': ['Alert-I', 'history-I'],
+                    'is_sim': False}
+        query_df = (g.session.query(db.models.field_sensor)
+                            .select_from(db.models.field_sensor)
+                            .join(db.models.sensor)
+                            .filter(db.models.field_sensor.field == field.id)
+                            .all())
+
+        for df in query_df:
+            profile['df_list'].append(df.df_name)
+            tablename1 = df.df_name.replace('-O', '')
+            table1 = getattr(db.models, tablename1)
+            data1 = _query_data(interval, table1.__tablename__, field1, start, end, limit)
+            result[field1].update({df.df_name: data1})
+
+        if profile['df_list']:
+            dan = DAN()
+            dan.device_registration_with_retry(profile, host, profile['d_name'])
+            dan.push('history-I', result)
+    ###
+
+    etime = datetime.now()
+    log.debug((etime - stime).total_seconds())
+
+    return jsonify(result)
+###
 
 @api.route('/datas/<string:field>', methods=['GET'])
 @utils.required_login
