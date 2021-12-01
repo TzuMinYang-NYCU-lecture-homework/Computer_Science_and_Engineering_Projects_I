@@ -36,5 +36,5 @@ while True:
             print('Connection failed due to unknow reasons.')
             time.sleep(1)    
 
-    time.sleep(0.2)
+    time.sleep(5)
 

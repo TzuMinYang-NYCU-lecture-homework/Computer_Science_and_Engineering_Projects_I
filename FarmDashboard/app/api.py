@@ -13,6 +13,7 @@ import config
 
 from . import utils
 from db import db
+from da.DAN import DAN
 
 log = logging.getLogger("\033[1;33m[API]: \033[0m")
 api = Blueprint('API', __name__)
@@ -86,6 +87,8 @@ def api_query_field_data(field, df_name):
 
     res = {df_name: [(str(record.timestamp), record.value) for record in query]}
 
+    
+
     etime = datetime.now()
     log.debug((etime - stime).total_seconds())
     return jsonify(res)
@@ -144,6 +147,43 @@ def api_datas():
 
     etime = datetime.now()
     log.debug((etime - stime).total_seconds())
+    
+    ### add by myself
+    # push request data to history-I
+    from config import CSM_HOST as host
+    '''
+    print(jsonify(result))
+    print('\n##########################################\n\n')
+    print(result)
+    print('\n------------------------------------------\n\n')
+    print(type(jsonify(result)))
+    print('\n******************************************\n\n')
+    '''
+
+    for field in (g.session.query(db.models.field).all()):
+        if field.name != field1 :
+            continue
+
+        profile = {'d_name': field.name + '_DataServer',
+                    'dm_name': 'DataServer',
+                    'df_list': ['Alert-I', 'history-I'],
+                    'is_sim': False}
+        query_df = (g.session.query(db.models.field_sensor)
+                            .select_from(db.models.field_sensor)
+                            .join(db.models.sensor)
+                            .filter(db.models.field_sensor.field == field.id)
+                            .all())
+
+        for df in query_df:
+            profile['df_list'].append(df.df_name)
+
+        if profile['df_list']:
+            dan = DAN()
+            dan.device_registration_with_retry(profile, host, profile['d_name'])
+            dan.push('history-I', result)
+    ###
+
+
     return jsonify(result)
 
 

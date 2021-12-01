@@ -1,7 +1,5 @@
 import time
-### add by myself
-import random
-###
+
 from threading import Thread
 
 from db import db
@@ -9,25 +7,23 @@ from db import db
 from config import CSM_HOST as host
 from da.DAN import DAN, log
 
+### add by myself
+#from flask import g
+
 def _run(profile, reg_addr, field, field_id, alert_range={}):
     dan = DAN()
     dan.device_registration_with_retry(profile, host, reg_addr)
+    
     while True:
         try:
+            ### add by myself
+            #IDF_data = []
+            ###
+
             # Pull data
-
-            
             session = db.get_session()
-            IDF_data = []
             for df in dan.selected_DF:
-                ############################################################################
-                # push data
-                if df == 'input_from_dummydevice':
-                    IDF_data = random.uniform(1, 10)
-                    dan.push ('input_from_dummydevice', IDF_data)
-
-                else:
-                ############################ above is add by myself ########################
+                if df != 'history-I':
                     data = dan.pull_with_timestamp(df)
                     if data:
                         log.debug(field, df, data)
@@ -43,12 +39,24 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
                         session.add(new_model)
                         session.commit()
 
+                        ### add by myself
+                        #IDF_data.append(new_model.value)
+                        #print(new_model.value)
+                        ###
+
                         # alert
                         if df in alert_range:
                             alert_min = alert_range[df].get('min', 0)
                             alert_max = alert_range[df].get('max', 0)
                             if alert_min != alert_max and (value > alert_max or value < alert_min):
                                 dan.push('Alert-I', '{} {}'.format(df, value))
+
+            ### add by myself
+            #dan.push ('history-I', IDF_data)
+            #sensors = g.session.query(db.models.sensor).order_by(db.models.sensor.id).all()
+            #print(sensors)
+            #print(IDF_data)
+            ###
 
             time.sleep(20)
         except KeyboardInterrupt:
@@ -72,9 +80,10 @@ def main():
     session = db.get_session()
 
     for field in (session.query(db.models.field).all()):
+        ### add by myself, I add history-I in df_list
         profile = {'d_name': field.name + '_DataServer',
                    'dm_name': 'DataServer',
-                   'df_list': ['Alert-I'],
+                   'df_list': ['Alert-I', 'history-I'],
                    'is_sim': False}
         alert_range = {}
         query_df = (session.query(db.models.field_sensor)
@@ -82,13 +91,8 @@ def main():
                            .join(db.models.sensor)
                            .filter(db.models.field_sensor.field == field.id)
                            .all())
-        #print(query_df)
-        #print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!123123\n")
-        profile['df_list'].append('input_from_dummydevice')
-
 
         for df in query_df:
-            #print(df, df.df_name)
             profile['df_list'].append(df.df_name)
             alert_range[df.df_name] = {'min': df.alert_min,
                                        'max': df.alert_max}
