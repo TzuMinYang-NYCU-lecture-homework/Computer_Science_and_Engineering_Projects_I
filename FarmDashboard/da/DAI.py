@@ -17,13 +17,15 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
     while True:
         try:
             ### add by myself
-            #IDF_data = []
+            realtime_data = {field: {}}
             ###
 
             # Pull data
             session = db.get_session()
             for df in dan.selected_DF:
-                if df != 'history-I':
+                ### add by myself
+                if df != 'history-I' and df != 'realtime-I':
+                ###
                     data = dan.pull_with_timestamp(df)
                     if data:
                         log.debug(field, df, data)
@@ -40,6 +42,12 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
                         session.commit()
 
                         ### add by myself
+                        # 令時間格式和push history一樣
+                        single_data = [{'timestamp':'{}'.format(data[0]), 
+                                        'value': '{}'.format(data[1])}]
+                        #realtime_data[field].update({df: data})
+                        realtime_data[field].update({df: single_data})
+
                         #IDF_data.append(new_model.value)
                         #print(new_model.value)
                         ###
@@ -56,7 +64,13 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
             #sensors = g.session.query(db.models.sensor).order_by(db.models.sensor.id).all()
             #print(sensors)
             #print(IDF_data)
+
+            if(len(realtime_data[field]) > 0):  #避免剛開始執行時沒有抓到資料時送出空的東西出去
+                dan.push('realtime-I', realtime_data)
+
             ###
+
+            
 
             time.sleep(20)
         except KeyboardInterrupt:
@@ -74,19 +88,19 @@ def _run(profile, reg_addr, field, field_id, alert_range={}):
             session.close()
 
 def main():
-    db.connect()
+    db.connect()#!!!
     threads = []
 
-    session = db.get_session()
+    session = db.get_session()#!!!
 
-    for field in (session.query(db.models.field).all()):
-        ### add by myself, I add history-I in df_list
+    for field in (session.query(db.models.field).all()):#!!! 名字可能是field.name
+        ### add by myself, I add history-I and realtime-I in df_list
         profile = {'d_name': field.name + '_DataServer',
                    'dm_name': 'DataServer',
-                   'df_list': ['Alert-I', 'history-I'],
+                   'df_list': ['Alert-I', 'history-I', 'realtime-I'],
                    'is_sim': False}
         alert_range = {}
-        query_df = (session.query(db.models.field_sensor)
+        query_df = (session.query(db.models.field_sensor)#!!!
                            .select_from(db.models.field_sensor)
                            .join(db.models.sensor)
                            .filter(db.models.field_sensor.field == field.id)

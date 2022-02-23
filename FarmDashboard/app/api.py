@@ -18,7 +18,7 @@ from da.DAN import DAN
 log = logging.getLogger("\033[1;33m[API]: \033[0m")
 api = Blueprint('API', __name__)
 
-### add by myself
+### add by myself，來自下面的api datas
 @api.route('/push_history', methods=['GET'])
 @utils.required_login
 def api_push_history():
@@ -57,9 +57,10 @@ def api_push_history():
         if field.name != field1 :
             continue
 
+        # 註冊DA之類的
         profile = {'d_name': field.name + '_DataServer',
                     'dm_name': 'DataServer',
-                    'df_list': ['Alert-I', 'history-I'],
+                    'df_list': ['Alert-I', 'history-I', 'realtime-I'],
                     'is_sim': False}
         query_df = (g.session.query(db.models.field_sensor)
                             .select_from(db.models.field_sensor)
@@ -67,17 +68,48 @@ def api_push_history():
                             .filter(db.models.field_sensor.field == field.id)
                             .all())
 
+
+        all_data = {}
+
         for df in query_df:
             profile['df_list'].append(df.df_name)
             tablename1 = df.df_name.replace('-O', '')
             table1 = getattr(db.models, tablename1)
             data1 = _query_data(interval, table1.__tablename__, field1, start, end, limit)
+
+            # 令時間格式固定，來自下面的api extract_data
+            #!!! 下面每個data['value']的外層都故意加了一個[]，為了和realtime的格式一樣，但不知道多筆資料時會怎樣
+            sensor_data = []
+            for data in data1[::-1]:
+                if interval == 'second':
+                    single_data = [{'timestamp':'{}'.format(data['timestamp']), 
+                                    'value': '[{}]'.format(data['value'])}]
+                    sensor_data = sensor_data + single_data
+                                                            
+                elif interval == 'minute': #!!! 23:07:00會變23:7:00 不知道有沒有差
+                    single_data = [{'timestamp':'{} {}:{}:00'.format(data['date'], data['hour'], data['minute']), 
+                                    'value': '[{}]'.format(data['value'])}]
+                    sensor_data = sensor_data + single_data
+                    
+                elif interval == 'hour':
+                    single_data = [{'timestamp':'{} {}:00:00'.format(data['date'], data['hour']), 
+                                    'value': '[{}]'.format(data['value'])}]
+                    sensor_data = sensor_data + single_data
+
+                elif interval == 'day':
+                    single_data = [{'timestamp':'{} 00:00:00'.format(data['date']), 
+                                    'value': '[{}]'.format(data['value'])}]
+                    sensor_data = sensor_data + single_data
+                    
+            all_data.update({df.df_name: sensor_data})
+
             result[field1].update({df.df_name: data1})
 
         if profile['df_list']:
             dan = DAN()
             dan.device_registration_with_retry(profile, host, profile['d_name'])
-            dan.push('history-I', result)
+            #dan.push('history-I', result)
+            dan.push('history-I', {field1: all_data})
     ###
 
     etime = datetime.now()
@@ -214,42 +246,6 @@ def api_datas():
 
     etime = datetime.now()
     log.debug((etime - stime).total_seconds())
-    
-    ### add by myself
-    # push request data to history-I
-    from config import CSM_HOST as host
-    '''
-    print(jsonify(result))
-    print('\n##########################################\n\n')
-    print(result)
-    print('\n------------------------------------------\n\n')
-    print(type(jsonify(result)))
-    print('\n******************************************\n\n')
-    '''
-
-    for field in (g.session.query(db.models.field).all()):
-        if field.name != field1 :
-            continue
-
-        profile = {'d_name': field.name + '_DataServer',
-                    'dm_name': 'DataServer',
-                    'df_list': ['Alert-I', 'history-I'],
-                    'is_sim': False}
-        query_df = (g.session.query(db.models.field_sensor)
-                            .select_from(db.models.field_sensor)
-                            .join(db.models.sensor)
-                            .filter(db.models.field_sensor.field == field.id)
-                            .all())
-
-        for df in query_df:
-            profile['df_list'].append(df.df_name)
-
-        if profile['df_list']:
-            dan = DAN()
-            dan.device_registration_with_retry(profile, host, profile['d_name'])
-            dan.push('history-I', result)
-    ###
-
 
     return jsonify(result)
 
