@@ -9,7 +9,9 @@ ServerURL = 'http://127.0.0.1:9999'
 Reg_addr = 'tmyang_dummydevice'
 
 DAN.profile['dm_name']='Dummy_Device'
-DAN.profile['df_list']=['Dummy_Sensor', 'Dummy_Control',]
+#DAN.profile['df_list']=['Dummy_Sensor', 'Dummy_Control',]
+DAN.profile['d_name']='寶山一場'
+DAN.profile['df_list']=['Dummy_Sensor', 'AtPressure-I', 'Bug1-I', 'Humidity-I', 'Moisture1-I', 'Moisture2-I', 'Temperature-I', 'UV1-I', 'Dummy_Control']
 #DAN.profile['d_name']= 'tmyang_dummydevice' 
 
 DAN.device_registration_with_retry(ServerURL, Reg_addr)
@@ -18,8 +20,17 @@ DAN.device_registration_with_retry(ServerURL, Reg_addr)
 
 while True:
     try:
-        IDF_data = random.uniform(1, 10)
-        DAN.push ('Dummy_Sensor', IDF_data) #Push data to an input device feature "Dummy_Sensor"
+        #IDF_data = random.uniform(1, 10)
+        #DAN.push ('Dummy_Sensor', IDF_data) #Push data to an input device feature "Dummy_Sensor"
+        
+        IDF_data = [random.uniform(1, 10) for i in range(7)]
+        DAN.push ('AtPressure-I', IDF_data[0])
+        DAN.push ('Bug1-I', IDF_data[1])
+        DAN.push ('Humidity-I', IDF_data[2])
+        DAN.push ('Moisture1-I', IDF_data[3])
+        DAN.push ('Moisture2-I', IDF_data[4])
+        DAN.push ('Temperature-I', IDF_data[5])
+        DAN.push ('UV1-I', IDF_data[6])
 
         #==================================
 

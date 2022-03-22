@@ -9,3 +9,6 @@
 *.pdf
 *.mkv
 else/*
+.env
+get_Cwb_data/
+*.lnk
