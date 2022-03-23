@@ -12,3 +12,5 @@ else/*
 .env
 get_Cwb_data/
 *.lnk
+data/
+*.csv

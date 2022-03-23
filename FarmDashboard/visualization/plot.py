@@ -6,7 +6,8 @@ import plotly.graph_objects as go # for 3d
 import numpy as np # for 3d
 import pandas as pd
 
-def scatter_plot():
+def scatter_plot(df):
+    """
     #df = px.data.iris() # iris is a pandas DataFrame
     data = {
         "Time": ["2022-02-16 08:56:34.016038", "2022-02-16 08:56:36.016038", "2022-02-16 08:56:38.016038", "2022-02-16 08:56:40.016038", "2022-02-16 08:56:42.016038", "2022-02-16 08:56:44.016038", "2022-02-16 08:56:46.016038", "2022-02-16 08:56:48.016038"],
@@ -18,11 +19,14 @@ def scatter_plot():
     #df.index = ["s1", "s2", "s3", "s4"]  #自訂索引值
     #df.columns = ["student_name", "math_score", "chinese_score"]  #自訂欄位名稱
     print(df)
-
-    fig = px.scatter(df, x="Bug1", y="Temperature", hover_name="Time")
+    """
+    df =df[0:24 * 31]
+    #print(df.tail())
+    fig = px.scatter(df, x="Temperature", y="Humidity", hover_name="Time")
     fig.show()
 
-def bubble_plot():
+def bubble_plot(df):
+    """
     data = {
         "Time": ["2022-02-16 08:56:34.016038", "2022-02-16 08:56:36.016038", "2022-02-16 08:56:38.016038", "2022-02-16 08:56:40.016038", "2022-02-16 08:56:42.016038", "2022-02-16 08:56:44.016038", "2022-02-16 08:56:46.016038", "2022-02-16 08:56:48.016038"],
         "Bug1": [6.8, 5.1, 6.4, 3.2, 3.4, 5.3, 4.0, 3.5],
@@ -32,11 +36,13 @@ def bubble_plot():
     
     df = pd.DataFrame(data)
     print(df)
-
-    fig = px.scatter(df,  x="Bug1", y="Temperature", size="AtPressure", hover_name="Time", size_max=120)
+    """
+    df =df[0:24 * 31]
+    fig = px.scatter(df,  x="Temperature", y="Humidity", size="Bug1", hover_name="Time", size_max=30)
     fig.show()
 
-def col_histogram_plot():
+def col_histogram_plot(df):
+    """
     data = {
         "Time": ["2022-02-16 08:56:34.016038", "2022-02-16 08:56:36.016038", "2022-02-16 08:56:38.016038", "2022-02-16 08:56:40.016038", "2022-02-16 08:56:42.016038", "2022-02-16 08:56:44.016038", "2022-02-16 08:56:46.016038", "2022-02-16 08:56:48.016038"],
         "Bug1": [6.8, 5.1, 6.4, 5.3, 4.4, 5.3, 5.3, 3.5],
@@ -45,10 +51,12 @@ def col_histogram_plot():
     df = pd.DataFrame(data)
     print(df)
 
-    fig = px.histogram(df, x="Bug1")
+    """
+    fig = px.histogram(df, x="Temperature")
     fig.show()
 
-def threeD_surface_plot(): # fail
+def threeD_surface_plot(df): # fail
+    """
     data1 = {
         "Time": ["2022-02-16 08:56:34.016038", "2022-02-16 08:56:36.016038", "2022-02-16 08:56:38.016038", "2022-02-16 08:56:40.016038", "2022-02-16 08:56:42.016038", "2022-02-16 08:56:44.016038", "2022-02-16 08:56:46.016038", "2022-02-16 08:56:48.016038"],
         "Bug1": [6.8, 5.1, 6.4, 3.2, 3.4, 5.3, 4.0, 3.5],
@@ -59,6 +67,7 @@ def threeD_surface_plot(): # fail
     df = pd.DataFrame(data1)
     print(df)
 
+    """
     x = df["Bug1"].values
     y = df["Temperature"].values
     z = df["AtPressure"].values
@@ -84,7 +93,8 @@ def threeD_surface_plot(): # fail
                     margin=dict(l=65, r=50, b=65, t=90))
     #fig.show()
 
-def line_plot():
+def line_plot(df):
+    """
     data = {
         "Time": ["2022-02-16 08:56:34.016038", "2022-02-16 08:56:36.016038", "2022-02-16 08:56:38.016038", "2022-02-16 08:56:40.016038", "2022-02-16 08:56:42.016038", "2022-02-16 08:56:44.016038", "2022-02-16 08:56:46.016038", "2022-02-16 08:56:48.016038"],
         "Bug1": [6.8, 5.1, 6.4, 3.2, 3.4, 5.3, 4.0, 3.5],
@@ -94,25 +104,54 @@ def line_plot():
 
     df = pd.DataFrame(data)
     print(df)
+    """
+    
+    df =df[0:240]
 
-    x = df["Time"].values
+    x = df["Time"]
 
     fig = go.Figure()
-    fig.add_trace(go.Scatter(x=x, y=df["Bug1"].values,
-                        mode='lines', name='Bug1'))
     fig.add_trace(go.Scatter(x=x, y=df["Temperature"].values,
                         mode='lines', name='Temperature'))
-    fig.add_trace(go.Scatter(x=x, y=df["AtPressure"].values,
-                        mode='lines', name='AtPressure'))
+    fig.add_trace(go.Scatter(x=x, y=df["Humidity"].values,
+                        mode='lines', name='Humidity'))
+    fig.add_trace(go.Scatter(x=x, y=df["Bug1"].values,
+                        mode='lines', name='Bug1'))
 
     fig.show()
 
+def bar_chart(df):
+
+    df =df[0:240]
+
+    x = df["Time"]
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=x,
+        y=df["Temperature"],
+        name='Temperature',
+        marker_color='indianred'
+    ))
+    fig.add_trace(go.Bar(
+        x=x,
+        y=df["Humidity"],
+        name='Humidity',
+        marker_color='lightsalmon'
+    ))
+
+    # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+    fig.update_layout(barmode='group', xaxis_tickangle=-45)
+    fig.show()
+
 if __name__ == "__main__":
-    #scatter_plot()
-    #bubble_plot()
-    #col_histogram_plot()
-    #threeD_surface_plot()
-    line_plot()
+    df = pd.read_csv("data/data.csv")
+    scatter_plot(df)
+    #bubble_plot(df)
+    #col_histogram_plot(df)
+    #threeD_surface_plot(df)
+    #line_plot(df)
+    #bar_chart(df)
 
 
 
