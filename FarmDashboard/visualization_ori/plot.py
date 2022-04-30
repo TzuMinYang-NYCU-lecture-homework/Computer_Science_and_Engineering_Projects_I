@@ -5,6 +5,7 @@ import plotly.express as px
 import plotly.graph_objects as go # for 3d
 import numpy as np # for 3d
 import pandas as pd
+import plotly.figure_factory as ff # for line histogram
 
 def scatter_plot(df):
     """
@@ -20,7 +21,6 @@ def scatter_plot(df):
     #df.columns = ["student_name", "math_score", "chinese_score"]  #自訂欄位名稱
     print(df)
     """
-    df =df[0:24 * 31]
     #print(df.tail())
     fig = px.scatter(df, x="Temperature", y="Humidity", hover_name="Time")
     fig.show()
@@ -68,22 +68,26 @@ def threeD_surface_plot(df): # fail
     print(df)
 
     """
-    x = df["Bug1"].values
-    y = df["Temperature"].values
-    z = df["AtPressure"].values
+    x = df["Temperature"].values
+    y = df["Humidity"].values
+    z = df["Bug1"].values
     print(x, y, z)
+    print(z.shape)
 
+    """
     fig = go.Figure(data=[go.Surface(z=z, x=x, y=y)])
     fig.show()
     fig.update_layout(title='Mt Bruno Elevation', autosize=True,
                     width=500, height=500,
                     margin=dict(l=65, r=50, b=65, t=90))
-    #fig.show()
-
+    fig.show()
+    """
+    """
     # Read data from a csv
     z_data = pd.read_csv('https://raw.githubusercontent.com/plotly/datasets/master/api_docs/mt_bruno_elevation.csv')
     #print(z_data)
     z = z_data.values
+    print(z.shape)
     #print(z)
     sh_0, sh_1 = z.shape
     x, y = np.linspace(0, 1, sh_0), np.linspace(0, 1, sh_1)
@@ -91,9 +95,16 @@ def threeD_surface_plot(df): # fail
     fig.update_layout(title='Mt Bruno Elevation', autosize=False,
                     width=500, height=500,
                     margin=dict(l=65, r=50, b=65, t=90))
-    #fig.show()
+    fig.show()
+    """
 
-def line_plot(df):
+def three_D_scatter_chart(df):
+    df = df[0:480]
+    fig = px.scatter_3d(df, x='Temperature', y='Humidity', z='Bug1',
+                        hover_name="Time")
+    fig.show()
+
+def line_three_var_plot(df):
     """
     data = {
         "Time": ["2022-02-16 08:56:34.016038", "2022-02-16 08:56:36.016038", "2022-02-16 08:56:38.016038", "2022-02-16 08:56:40.016038", "2022-02-16 08:56:42.016038", "2022-02-16 08:56:44.016038", "2022-02-16 08:56:46.016038", "2022-02-16 08:56:48.016038"],
@@ -120,7 +131,55 @@ def line_plot(df):
 
     fig.show()
 
-def bar_chart(df):
+def line_two_var_plot(df):
+    """
+    data = {
+        "Time": ["2022-02-16 08:56:34.016038", "2022-02-16 08:56:36.016038", "2022-02-16 08:56:38.016038", "2022-02-16 08:56:40.016038", "2022-02-16 08:56:42.016038", "2022-02-16 08:56:44.016038", "2022-02-16 08:56:46.016038", "2022-02-16 08:56:48.016038"],
+        "Bug1": [6.8, 5.1, 6.4, 3.2, 3.4, 5.3, 4.0, 3.5],
+        "Temperature": [6.3, 5.0, 4.5, 5.1, 6.8, 4.3, 4.6, 3.2],
+        "AtPressure": [1.9, 3.9, 4.6, 4.4, 3.3, 6.4, 5.0, 1.0]
+    }
+
+    df = pd.DataFrame(data)
+    print(df)
+    """
+    
+    df =df[0:240]
+
+    x = df["Time"]
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=x, y=df["Temperature"].values,
+                        mode='lines', name='Temperature'))
+    fig.add_trace(go.Scatter(x=x, y=df["Humidity"].values,
+                        mode='lines', name='Humidity'))
+
+    fig.show()
+
+def line_one_var_plot(df):
+    """
+    data = {
+        "Time": ["2022-02-16 08:56:34.016038", "2022-02-16 08:56:36.016038", "2022-02-16 08:56:38.016038", "2022-02-16 08:56:40.016038", "2022-02-16 08:56:42.016038", "2022-02-16 08:56:44.016038", "2022-02-16 08:56:46.016038", "2022-02-16 08:56:48.016038"],
+        "Bug1": [6.8, 5.1, 6.4, 3.2, 3.4, 5.3, 4.0, 3.5],
+        "Temperature": [6.3, 5.0, 4.5, 5.1, 6.8, 4.3, 4.6, 3.2],
+        "AtPressure": [1.9, 3.9, 4.6, 4.4, 3.3, 6.4, 5.0, 1.0]
+    }
+
+    df = pd.DataFrame(data)
+    print(df)
+    """
+    
+    df =df[0:240]
+
+    x = df["Time"]
+
+    fig = go.Figure()
+    fig.add_trace(go.Scatter(x=x, y=df["Temperature"].values,
+                        mode='lines', name='Temperature'))
+
+    fig.show()
+
+def bar_two_var_chart(df):
 
     df =df[0:240]
 
@@ -144,14 +203,57 @@ def bar_chart(df):
     fig.update_layout(barmode='group', xaxis_tickangle=-45)
     fig.show()
 
+def bar_one_var_chart(df):
+
+    df =df[0:24]
+
+    x = df["Time"]
+
+    fig = go.Figure()
+    fig.add_trace(go.Bar(
+        x=x,
+        y=df["Temperature"],
+        name='Temperature',
+        marker_color='indianred'
+    ))
+
+    # Here we modify the tickangle of the xaxis, resulting in rotated labels.
+    fig.update_layout(barmode='group', xaxis_tickangle=-45)
+    fig.show()
+
+def line_histogram(df):
+    x1 = np.random.randn(200) - 1
+
+    hist_data = df["Temperature"].values
+    hist_data = [hist_data[0:200]]
+    print(x1)
+    print(hist_data)
+    print(type(x1), type(hist_data), x1.shape, hist_data.shape)
+
+    group_labels = ['Temperature']
+    colors = ['#333F44']
+
+    # Create distplot with curve_type set to 'normal'
+    fig = ff.create_distplot(hist_data, group_labels, show_hist=False, colors=colors)
+
+    # Add title
+    fig.update_layout(title_text='Curve and Rug Plot')
+    fig.show()
+
 if __name__ == "__main__":
     df = pd.read_csv("data/data.csv")
     scatter_plot(df)
     #bubble_plot(df)
     #col_histogram_plot(df)
     #threeD_surface_plot(df)
-    #line_plot(df)
-    #bar_chart(df)
+    #three_D_scatter_chart(df)
+    #line_three_var_plot(df)
+    #line_two_var_plot(df)
+    #line_one_var_plot(df)
+    
+    #bar_two_var_chart(df)
+    #bar_one_var_chart(df)
+    #line_histogram(df)
 
 
 
