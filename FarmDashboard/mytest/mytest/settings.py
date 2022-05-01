@@ -26,7 +26,9 @@ SECRET_KEY = 'django-insecure--=l*!zl(!!9t=d%o)g5=3$&9&x28%9++^+o@4vu-585=jb2blr
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [] # comment by myself
+# add by myself
+#ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -136,6 +138,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 # add by myself
 X_FRAME_OPTIONS = 'SAMEORIGIN'
 
+
 # Staticfiles finders for locating dash app assets and related files
 
 STATICFILES_FINDERS = [
@@ -184,7 +187,7 @@ MIDDLEWARE = [
       'django_plotly_dash.middleware.BaseMiddleware',
       'django_plotly_dash.middleware.ExternalRedirectionMiddleware',
 
-      'django.middleware.clickjacking.XFrameOptionsMiddleware',
+      #'django.middleware.clickjacking.XFrameOptionsMiddleware',
   ]
 
 # end of my add
