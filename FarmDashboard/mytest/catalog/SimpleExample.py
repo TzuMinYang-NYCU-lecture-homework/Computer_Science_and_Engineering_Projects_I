@@ -102,7 +102,8 @@ app.layout = dbc.Container(
                                             dcc.Dropdown(options=["Assess a relationship", "Evaluate a distribution", "Compare data"], value="Assess a relationship", id="select_target"),
                                             width={"size": 6}
                                         )
-                                    ]
+                                    ],
+                                    class_name="align-items-center"
                                 ),
                                 dbc.Row(),
                             ],
@@ -119,7 +120,8 @@ app.layout = dbc.Container(
                                                 html.Font("Recommended Chart Type: ", style={"color": "#999"}),
                                                 "None"
                                             ], 
-                                            id="Recommended_Chart"
+                                            id="Recommended_Chart",
+                                            className="text-right"
                                         ), 
                                         width={"size": 8}
                                     ),
@@ -132,18 +134,6 @@ app.layout = dbc.Container(
                     ], 
                 ),
                 dbc.Row(html.P("")),
-                dbc.Row(
-                    [
-                        dbc.Col(
-                            html.Hr(style={"width": "85%"}),
-                            width=6
-                        ),
-                        dbc.Col(
-                            html.Hr(style={"width": "100%"}),
-                            width={"size": 5, "offset": 1}
-                        )                        
-                    ]
-                )
             ]
             
         ),
@@ -192,7 +182,8 @@ app.layout = dbc.Container(
                             ], 
                             width=6
                         ),
-                    ]
+                    ],
+                    class_name="align-items-center"
                 ),
                 dbc.Row(html.P("")),
             ],
