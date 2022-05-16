@@ -1,3 +1,4 @@
+from operator import truediv
 import dash
 #import dash_core_components as dcc
 #import dash_html_components as html
@@ -6,6 +7,8 @@ import dash_bootstrap_components as dbc
 from dash import html
 from dash import dcc
 from dash.dependencies import Input, Output, State, MATCH, ALL
+import datetime
+from furl import furl
 
 import sys
 sys.path.append("..")
@@ -77,9 +80,12 @@ app = DjangoDash(
     external_stylesheets=[dbc.themes.BOOTSTRAP, dbc.icons.BOOTSTRAP, work_sans_regular_and_medium_and_black_css],
 )   # replaces dash.Dash
 
-app.layout = dbc.Container(
+app.layout = dbc.Container(#, "border-width": "3px", "border-style": "solid"
     [
-        dbc.Container([dbc.Row(html.P("")), dbc.Row(dbc.Col(dbc.Alert("Visualization", color="primary", style={"font-size": "60px", "font-weight": "900"}, class_name="text-center"), width=12), justify="center"), dbc.Row(html.P("")), dbc.Row(html.P("")), ]),
+        dcc.Store(id='field_sensor'),
+        dcc.Location(id='url', refresh=False),
+        html.P(id="test"),
+        dbc.Container([dbc.Row(html.P("")), dbc.Row(dbc.Col("Visualization", width=12), justify="center", style={"font-size": "40px", "font-weight": "600", "color": "rgb(255, 255, 255)", "text-align": "center", "background-color": "rgb(41, 105, 176, 0.7)", "border-radius": "10px"}), dbc.Row(html.P("")), dbc.Row(html.P("")), ]),
         dbc.Container(
             [
                 dbc.Row(
@@ -89,21 +95,20 @@ app.layout = dbc.Container(
                                 dbc.Row(
                                     [
                                         dbc.Col(
-                                            html.P(
-                                                [
-                                                    html.Font("Step 1. ", style={"color": "#999"}),
-                                                    "Target"
-                                                ],
-                                            ),
+                                            [
+                                                html.Font("Step 1. ", style={"color": "#999"}),
+                                                "Target"
+                                            ],
                                             width=4,
-                                            style={"font-weight": "600"}
+                                            style={"font-weight": "600"},
+                                            align="center"
                                         ),
                                         dbc.Col(
                                             dcc.Dropdown(options=["Assess a relationship", "Evaluate a distribution", "Compare data"], value="Assess a relationship", id="select_target"),
-                                            width={"size": 6}
+                                            width={"size": 6},
+                                            align="center"
                                         )
-                                    ],
-                                    class_name="align-items-center"
+                                    ]
                                 ),
                                 dbc.Row(),
                             ],
@@ -115,15 +120,14 @@ app.layout = dbc.Container(
                                 #dbc.Row(dbc.Col(html.P("None", id="Recommended_Chart"), width={"size": 4}), justify="end"),
                                 dbc.Row(
                                     dbc.Col(
-                                        html.P(
-                                            [
-                                                html.Font("Recommended Chart Type: ", style={"color": "#999"}),
-                                                "None"
-                                            ], 
-                                            id="Recommended_Chart",
-                                            className="text-right"
-                                        ), 
-                                        width={"size": 8}
+                                        [
+                                            html.Font("Recommended Chart Type: ", style={"color": "#999"}),
+                                            "None"
+                                        ], 
+                                        id="Recommended_Chart",
+                                        className="text-right", 
+                                        width={"size": 8}, 
+                                        align="center"
                                     ),
                                     justify="end",
                                     style={"font-size": "15px"}
@@ -147,14 +151,13 @@ app.layout = dbc.Container(
                                 dbc.Row(
                                     [
                                         dbc.Col(
-                                            html.P(
-                                                [
-                                                    html.Font("Step 2. ", style={"color": "#999"}),
-                                                    "Time"
-                                                ],
-                                            ),
+                                            [
+                                                html.Font("Step 2. ", style={"color": "#999"}),
+                                                "Time"
+                                            ],
                                             width=4,
-                                            style={"font-weight": "600"}
+                                            style={"font-weight": "600"},
+                                            align="center"
                                         ),
                                     ],
                                 )
@@ -166,24 +169,22 @@ app.layout = dbc.Container(
                                 dbc.Row(
                                     [
                                         dbc.Col(
-                                            html.P(
-                                                [
-                                                    html.Font("Step 3. ", style={"color": "#999"}),
-                                                    "Sensors"
-                                                ],
-                                            ),
+                                            [
+                                                html.Font("Step 3. ", style={"color": "#999"}),
+                                                "Sensors"
+                                            ],
                                             width={"size": 4, "offset": 2},
-                                            style={"font-weight": "600"}
+                                            style={"font-weight": "600"},
+                                            align="center"
                                         ),
-                                        dbc.Col(html.P("# of sensors", style={"font-size": "15px"}), width={"size": 3, "offset": 1}, align="center"),
+                                        dbc.Col("# of sensors", style={"font-size": "15px"}, width={"size": 3, "offset": 1}, align="center"),
                                         dbc.Col(dbc.Input(value=2, type="number", min=2, max=3, step=1, id='sensor_number_input'), width=2),
                                     ],
                                 )
                             ], 
                             width=6
                         ),
-                    ],
-                    class_name="align-items-center"
+                    ]
                 ),
                 dbc.Row(html.P("")),
             ],
@@ -196,31 +197,32 @@ app.layout = dbc.Container(
                             [
                                 dbc.Row(
                                     [
-                                        dbc.Col(html.P("Type"), width={'size': 3, 'offset': 1}),
+                                        dbc.Col("Type", width={'size': 3, 'offset': 1}, align="center"),
                                         dbc.Col(
-                                            dcc.Dropdown(options=["Time Interval", "Realtime"], value="Time Interval"),
+                                            dcc.Dropdown(options=["Time Interval", "Realtime"], value="Time Interval", id="time_type"),
                                             width=5
                                         )
                                     ],
                                 ),
-                                dbc.Row(
-                                    [
-                                        dbc.Col(html.P("Interval"), width={'size': 3, 'offset': 1}),
-                                        dbc.Col(
-                                            dcc.Dropdown(options=["second", "minute", "hour", "day", "week"], value="hour", ),
-                                            width=4
-                                        )
-                                    ]
-                                )
+                                #dbc.Row(
+                                #    [
+                                #        dbc.Col(html.P("Interval"), width={'size': 3, 'offset': 1}),
+                                #        dbc.Col(
+                                #            dcc.Dropdown(options=["second", "minute", "hour", "day", "week"], value="hour", ),
+                                #            width=4
+                                #        )
+                                #    ]
+                                #),
                             ],
-                            width=6
+                            width=6,
+                            id="time_select"
                         ),
                         dbc.Col(
                             [
                                 dbc.Row(
                                     [
-                                        dbc.Col(html.P("Item"), width={'size': 3, 'offset': 3}),
-                                        dbc.Col(html.P("Name"), width={'size': 3, 'offset': 2}),
+                                        dbc.Col("Item", width={'size': 3, 'offset': 3}, align="center"),
+                                        dbc.Col("Name", width={'size': 3, 'offset': 2}, align="center"),
                                     ]
                                 )
                             ], 
@@ -231,7 +233,22 @@ app.layout = dbc.Container(
                 ),
             ],
         ),
-        dbc.Container([dbc.Row(html.P("")), dbc.Row(html.P("")), dbc.Row(dbc.Col(dbc.Button("OK", color="primary", size="md", style={"font-size": "30px"}), width=1), justify="center")])
+        dbc.Container(
+            dbc.Row(
+                html.P(id="modal_error", style={"color": "red", "text-align": "center"}),
+            )
+        ),
+        dbc.Container([dbc.Row(html.P("")), dbc.Row(dbc.Col(dbc.Button("OK", id="open_graph", color="primary", size="md", style={"font-size": "30px"}), width=1), justify="center")]),
+
+        dbc.Modal(
+            [
+                dbc.ModalHeader(dbc.ModalTitle("Header")),
+                dbc.ModalBody("An extra large modal."),
+            ],
+            id="graph",
+            size="xl",
+            is_open=False,
+        ),
     ],
     style={"font-size": "18px", "font-family": " 'Work Sans', sans-serif", "font-weight": "400", "color": "#444"}, # sans-serif拿掉好像沒影響，但google font上面說要加我就加了
     class_name="dbc"
@@ -254,7 +271,7 @@ def add_all_sensor_select_item(sensor_num, all_sensor_select):
             all_sensor_select.append(
                 dbc.Row(
                     [
-                        dbc.Col(html.P(''), width={'size': 3, 'offset': 3}, id={"type": "sensor_item", "index": i + ori_sensor_num}),
+                        dbc.Col(width={'size': 3, 'offset': 3}, id={"type": "sensor_item", "index": i + ori_sensor_num}, align="center"),
                         dbc.Col(
                             dcc.Dropdown(options=sensor_in_this_field, value=sensor_in_this_field[i + ori_sensor_num], id={"type": "sensor_select", "index": i + ori_sensor_num}),
                             width=6
@@ -373,6 +390,88 @@ def change_item_name(recommended_chart, sensor_items):
     recommended_chart = recommended_chart[1]
     if recommended_chart != "None":
         for i in range(min(len(chart_to_item_map[recommended_chart]), len(sensor_items))): #!!! 有出過一個奇怪的error，感覺是因為sensor num更新太快，為了避免那個error才選擇用min
-            sensor_items[i]["props"]["children"] = chart_to_item_map[recommended_chart][i]
+            sensor_items[i] = chart_to_item_map[recommended_chart][i]
 
     return sensor_items
+
+@app.callback(
+    Output('time_error', 'children'),
+    Input('start_time', 'value'),
+    Input('end_time', 'value'),
+    prevent_initial_call=True
+)
+def check_start_end_time(start_time, end_time):
+    if(start_time and end_time):
+        datetime_start_time = datetime.datetime.strptime(start_time, '%Y-%m-%dT%H:%M:%S')
+        datetime_end_time = datetime.datetime.strptime(end_time, '%Y-%m-%dT%H:%M:%S')
+        if(datetime_start_time >= datetime_end_time):
+            return "TIME ERROR: End must bigger than Start."
+
+    return ""
+
+
+@app.callback(
+    Output('time_select', 'children'),
+    Input('time_type', 'value'),
+    State('time_select', 'children')
+)
+def check_time_type(time_type, time_select):
+    if(time_type == "Time Interval"):
+        time_select += [
+                            dbc.Row(
+                                [
+                                    dbc.Col("Start", width={'size': 3, 'offset': 1}, align="center"),
+                                    #dbc.Col(
+                                    #    dbc.Input(type="text", id="start_time", className="form-control", style={"font-size": "18px", "font-family": " 'Work Sans', sans-serif", "font-weight": "400", "color": "#444"}),
+                                    #    width=6
+                                    #),
+                                    dbc.Col(
+                                        dcc.Input(type="datetime-local", id="start_time", step="1", style={"font-size": "18px", "font-family": " 'Work Sans', sans-serif", "font-weight": "400", "color": "#444", "text-align": "center"}),
+                                        width=5
+                                    ),
+                                ]
+                            ),
+                            dbc.Row(
+                                [
+                                    dbc.Col("End", width={'size': 3, 'offset': 1}, align="center"),
+                                    #dbc.Col(
+                                    #    dbc.Input(type="text", id="end_time", className="form-control", style={"font-size": "18px", "font-family": " 'Work Sans', sans-serif", "font-weight": "400", "color": "#444"}),
+                                    #    width=6
+                                    #),
+                                    dbc.Col(
+                                        dcc.Input(type="datetime-local", id="end_time", step="1", style={"font-size": "18px", "font-family": " 'Work Sans', sans-serif", "font-weight": "400", "color": "#444", "text-align": "center"}),
+                                        width=4
+                                    ),
+                                ]
+                            ),
+                            dbc.Row(dbc.Col(html.P(id="time_error", style={"color": "red"}), width={'size': 9, 'offset': 3})),
+                        ]
+    else:
+        time_select = time_select[0: 1]
+    
+    return time_select
+
+
+@app.callback(
+    Output('modal_error', 'children'),
+    Output("graph", "is_open"),
+    Input("open_graph", "n_clicks"),
+    State("graph", "is_open"),
+    State('time_error', 'children'),
+    State('start_time', 'value'),
+    State('end_time', 'value'),
+    prevent_initial_call=True
+)
+def check_and_open_graph(n_clicks, is_open, time_error, start_time, end_time):
+    error_msg = ""
+    if((not start_time) or (not end_time)):
+        error_msg = "TIME ERROR: Please set time."
+
+    elif(n_clicks and time_error != ""):
+        if(time_error == ""):
+            is_open = True
+        else:
+            error_msg = "TIME ERROR: End must bigger than Start."
+
+    return error_msg, is_open
+    
