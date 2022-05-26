@@ -16,5 +16,5 @@ def hello_world(request):
 
     })
 
-def SimpleExample(request):
+def SimpleExample(request, filedname):
     return render(request, 'SimpleExample.html')

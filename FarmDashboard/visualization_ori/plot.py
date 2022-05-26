@@ -245,7 +245,7 @@ if __name__ == "__main__":
     scatter_plot(df)
     #bubble_plot(df)
     #col_histogram_plot(df)
-    #threeD_surface_plot(df)
+    ##threeD_surface_plot(df)
     #three_D_scatter_chart(df)
     #line_three_var_plot(df)
     #line_two_var_plot(df)
